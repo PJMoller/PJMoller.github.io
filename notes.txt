@@ -1,0 +1,10 @@
+        <?php
+            $values = ["value1","value2","value3"];
+            $key = 0;
+
+            foreach ($values as $value)
+            {
+                echo "<p>key $key is $value</p>";
+                $key = $key + 1;
+            }
+        ?>
