@@ -164,10 +164,9 @@ main p{
     --dark-color: #227093;
 }
 @media only screen and (max-width: 1199px){
-    .serviceBox{ margin: 0 0 40px; }
+    .serviceBox{ margin: 0 0 40px; }}
 
 .row{
-    display: flex;
-    flex-direction: row;
-    width: 500px;
+    width: 400px;
+    height: 400px;
 }
