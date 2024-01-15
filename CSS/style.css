@@ -50,10 +50,13 @@ header a{
 
 main{
     background-color: #c69784;
+    height: 82vh;
+    width: 100%;
+}
+
+.container{
     display: flex;
     align-items: center;
-    flex-direction: column;
-    height: 82vh;
 }
 
 main h1{
@@ -79,14 +82,6 @@ main p{
     margin-left: 25px;
     justify-self: flex-start;
 }
-
-.box{
-    width: 200px;
-    height: 200px;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
 :root{ 
     --main-color: #FCC30A; 
     --dark-color: #C59505;
@@ -170,3 +165,9 @@ main p{
 }
 @media only screen and (max-width: 1199px){
     .serviceBox{ margin: 0 0 40px; }
+
+.row{
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+}
