@@ -174,6 +174,11 @@ main p{
     --main-color: #e245c3; 
     --dark-color: #93226b;
 }
+.serviceBox.lime{ 
+    --main-color: #a6e245; 
+    --dark-color: #22932b;
+}
+
 @media only screen and (max-width: 1199px){
     .serviceBox{ margin: 0 0 40px; }}
 
