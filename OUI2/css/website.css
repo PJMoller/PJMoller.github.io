@@ -1,0 +1,580 @@
+@font-face {
+    font-family: 'Circular Std';
+    src: url(../Fonts/Circularstd.otf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-behavior: smooth;
+  }
+
+/* header */
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100vw;
+    background-color: #EDE5BB;
+    padding: 0 20px;
+    z-index: 999;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; 
+    justify-content: center; 
+}
+
+.vlag-nederland{
+    width: 50px;
+}
+
+.vlag-brits{
+    width: 50px;
+}
+
+img.logo {
+    width: 100px;
+    height: 56px;
+}
+
+.header-container ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.header-container ul li {
+    margin-right: 70px;
+}
+
+.header-container a {
+    text-decoration: none;
+    font-family: 'Caveat';
+    font-weight: 700;
+    font-size: 25px;
+    color: #95261F;
+}
+
+.header-container a:hover {
+    color: #00657C;
+}
+
+/* body */
+
+body{
+    background-color: #EDE5BB;
+    color: #95261F;
+}
+
+.home {
+    display: flex;
+    background-color: #fff;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    height: 100vh;
+    width: 100%;
+    background-image: url("../photos/pexels-chevanon-photography-302894.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.home-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 20%;
+    border: 5px solid #BAD3EE;
+    color: white;
+    background: rgba(217, 217, 217, 0.06);
+    font-family: 'Caveat';
+    font-weight: 700;
+    font-size: 100px;
+}
+
+/* menu */
+
+.menu-container{
+    margin-top: 90px;
+}
+.title {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    margin: 20px;
+    font-family: 'Caveat';
+}
+.menu-kaart {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.title-food {
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-family: 'Caveat';
+    font-weight: bold;
+}
+
+.Pain-Croissant {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    align-items: flex-start;
+    font-family: 'Caveat';
+    font-size: 25px;
+    font-weight: bold;
+}
+
+
+.Pain-list {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.Pain-list img{
+    position: absolute;
+    transform: rotate(-30deg);
+}
+
+.price-list {
+    margin-left: 50px;
+}
+.sweets-container{
+    margin-top: 50px;
+}
+.Pain-Croissant .sweets-list {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 15px;
+}
+
+.sweets-list img {
+    position: absolute;
+    transform: rotate(15deg);
+    margin-top: -20px;
+}
+
+.sweets-price{
+    margin-left: 105px;
+}
+.title-drink{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    font-size: 40px;
+    font-family: 'Caveat';
+    font-weight: bold;
+}
+.coffee-tea{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+.coffee-tea p{
+    font-size: 20px;
+    font-family: 'Caveat';
+    font-weight: bold;
+    font-size: 25px;
+}
+.coffee-tea-list{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.coffee-tea-list img{
+    transform: rotate(-15deg);
+    position: absolute;
+    margin-top: -50px;
+}
+
+.drinks-price-list{
+    margin-left: 100px;
+}
+
+.cool-drinks{
+    margin-top: 128px;
+}
+
+.cool-drink-list{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    font-size: 19px;
+}
+
+.cool-drink-list img{
+    transform: rotate(30deg);
+    position: absolute;
+    margin-top: -80px;
+}
+
+.cool-drink-price{
+    margin-left: 35px;
+}
+
+ul {
+    list-style: none;
+}
+
+ul li {
+    font-family: 'Caveat';
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.img_croissant{
+    position: absolute;
+    z-index: -1;
+    width: 250px;
+    opacity: 0.5;
+}
+
+.img_merengue{
+    position: absolute;
+    z-index: -1;
+    width: 250px;
+    opacity: 0.5;
+}
+
+.img_coffee{
+    position: absolute;
+    z-index: -1;
+    width: 220px;
+    opacity: 0.5;
+    padding-bottom: 20px;
+}
+
+.img_tea{
+    position: absolute;
+    z-index: -1;
+    width: 220px;
+    opacity: 0.5;
+}
+
+/* review */
+
+.review-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 90px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.review-container p h1 {
+    font-family: "Circular Std";
+}
+
+.review1 {
+    padding: 20px;
+    margin-right: 100px;
+    border-radius: 8px;
+    text-align: center;
+    border-radius: 15px;
+    border-color: #95261F;
+    border-style: solid;
+    border-width: 8px;
+    width: 318px;
+    height: 468px;
+    font-size: 20px;
+    font-family: "Circular Std";
+}
+
+.review2 {
+    padding: 20px;
+    margin-left: 100px;
+    border-radius: 8px;
+    text-align: center;
+    border-radius: 15px;
+    border-color: #95261F;
+    border-style: solid;
+    border-width: 8px;
+    width: 318px;
+    height: 468px;
+    font-size: 20px;
+    font-family: "Circular Std";
+}
+
+/* about us  */
+
+.about-us-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 90px;
+    flex-direction: column;
+    align-items: center;   
+}
+
+.about-us-title p{
+    font-size: 40px;
+    font-family: "Caveat";
+    font-weight: bold;
+}
+
+.about-us{
+    width: 70%;
+    margin-top: 25px;
+    font-family: "Circular Std";
+}
+
+/* slide animation */
+
+#container-slider {
+    margin-top: 90px;
+    display: grid;
+    grid-template-columns: 15% 32.5% 5% 32.5% 15%;
+    grid-template-rows: 5% 80% 60%;
+}
+
+#slider1 {
+    grid-row: 2;
+    grid-column: 2 / 3;
+    overflow: hidden;
+    border: 3px solid #95261F;
+}
+
+#slider1 figure {
+    position: relative;
+    width: 500%;
+    margin: 0;
+    left: 0;
+    animation: 20s slider infinite;
+}
+
+#slider1 figure img {
+    width: 20%;
+    height: 25%;
+    object-fit: cover;
+    float: left;
+}
+
+#slider2 {
+    grid-row: 2;
+    grid-column: 4 / 5;
+    overflow: hidden;
+    border: 3px solid #95261F;
+}
+
+#slider2 figure {
+    position: relative;
+    width: 500%;
+    margin: 0;
+    left: 0;
+    animation: 20s slider infinite;
+}
+
+#slider2 figure img {
+    width: 20%;
+    height: 35%;
+    object-fit: cover;
+    float: left;
+}
+
+@keyframes slider {
+    0% {
+        left: 0;
+    }
+    20% {
+        left: 0;
+    }
+    25% {
+        left: -100%;
+    }
+    45% {
+        left: -100%;
+    }
+    50% {
+        left: -200%;
+    }
+    70% {
+        left: -200%;
+    }
+    75% {
+        left: -300%;
+    }
+    95% {
+        left: -300%;
+    }
+    100% {
+        left: 0%;
+    }
+}
+
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* contact */
+
+.contact-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.contact-informatie {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
+
+.contact-locatie {
+    margin-bottom: 30px;
+}
+
+.openings-tijden-titel p{
+    font-family: "Circular Std";
+    margin-top: 30px;
+}
+.contact-contact {
+    display: flex;
+    flex-direction: row;
+}
+
+.contact-contact ul li {
+    font-family: "Circular Std";
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+.contact-openingstijden {
+    display: flex;
+    gap: 10px;
+}
+
+.contact-informatie p {
+    font-family: "Circular Std";
+    font-size: 18px;
+}
+
+.contact-titel {
+    font-family: "Circular Std";
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.locatie-text {
+    font-family: "Circular Std";
+    font-weight: lighter;
+    font-size: 17px;
+}
+
+.locatie-titel {
+    font-family: "Circular Std";
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.contact-openingstijden-tijd li {
+    font-family: "Circular Std";
+    font-weight: lighter; 
+    font-size: 17px;
+}
+
+.contact-openingstijden-dag li {
+    font-family: "Circular Std";
+    font-weight: lighter; 
+    font-size: 17px;
+}
+.openings-tijden-titel {
+    font-weight: bold; 
+    margin-top: 80px;
+}
+
+.contact-openingstijden-dag {
+    margin-bottom: 80px;
+}
+
+.maps-area {
+    align-items: absolute;
+    border: 5px solid #95261F;
+    height: 350px;
+    width: 515px;
+    background-color: white;
+    margin-top: 100px;
+    margin-right: 70px;
+}
+
+.contact-header{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-family: "Caveat", serif;
+    font-size: 35px;
+    color: #95261F;
+    font-weight: bold;
+}
+
+.container-contact {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.contact-maps {
+    justify-content: center;
+}
+
+#mymap{
+    position:relative;
+    width:600px;
+    height:400px;
+    margin-right: 50px;
+}
+
+@media screen and (max-width: 1000px) {
+    .contact-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .contact-header {
+      font-size: 60px;
+      margin-left: 0;
+      margin-bottom: 20px;
+    }
+  
+    .contact-information {
+      font-size: 16px;
+      margin-left: 0;
+    }
+
+    .maps-area {
+        margin-left: 0;
+    }
+
+    .openingstijden{
+      font-size: 16px;
+      margin-top: -125px;
+      margin-left: 150px;
+  }
+}
+
+
