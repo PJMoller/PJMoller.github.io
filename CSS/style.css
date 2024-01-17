@@ -178,6 +178,10 @@ main p{
     --main-color: #a6e245; 
     --dark-color: #22932b;
 }
+.serviceBox.gray{ 
+    --main-color: #524e64; 
+    --dark-color: #8e928f;
+}
 
 @media only screen and (max-width: 1199px){
     .serviceBox{ margin: 0 0 40px; }}
