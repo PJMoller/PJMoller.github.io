@@ -22,10 +22,15 @@
     </header>  
     <main>
         <h2>Give me an image!</h2>
-        <form action="#">
-        <input type="file" id="myFile" name="filename">
-        <input type="submit">
-        </form>
+    <!-- form TAB enctype:multipart/form-data TAB -->
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        Select File to Upload (Max 3MB):<br>
+        <!-- input:file TAB -->
+        <input type="file" name="file" accept=".png, .jpeg, .jpg, .gif" />
+        <br><br>
+        <!-- inpute:submit TAB -->
+        <input type="submit" value="Upload File" />
+    </form>
     </main>
 
     <footer>
