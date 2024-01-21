@@ -37,6 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 $stmt->bindParam("solution", $solution, PDO::PARAM_STR);
                 $stmt->execute(); 
                 echo "Query executed! {$stmt->rowCount()} row(s) affected<br>";
+                echo "<a href=bugshower.php>Show all bugs</a>";
             }catch(Exception $ex) {
                 printError($ex);
             }

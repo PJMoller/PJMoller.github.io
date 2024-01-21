@@ -22,11 +22,9 @@
     <h1>File Overview</h1>
     <h2>JPEG Files</h2>
     <?php
-    // glob checks with the star for everything thats in uplouds/ with the .jpeg extention.
     $jpegFiles = glob("uploads/*.jpeg");
     echo "<table>";
     echo "<tr><th>File Name</th><th>Actions</th></tr>";
-    // foreach jpeg file it makes an echo and displays the name and a link that directs you to the delete.php.
     foreach ($jpegFiles as $file) {
         echo "<tr><td>" . basename($file) . "</td><td><a href='delete.php?file=" . $file . "'>Delete</a></td></tr>";
     }
