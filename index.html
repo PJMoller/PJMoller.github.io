@@ -5,57 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peter Möller</title>
 <meta name="description" content="Peter Möller — builder of small robots and stubborn code.">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%2339ff88' font-family='monospace'%3E%3E_%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <canvas id="circuit-bg"></canvas>
+  <canvas id="circuit-bg" aria-hidden="true"></canvas>
 
   <nav class="nav">
-    <span class="nav-logo">PM</span>
+    <a href="#top" class="nav-logo">PM<span class="nav-cursor">_</span></a>
     <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <a href="#work">work</a>
+      <a href="#about">about</a>
+      <a href="#contact">contact</a>
     </div>
   </nav>
 
-  <header class="hero">
-    <p class="hero-eyebrow">Hey, I'm</p>
-    <h1 class="hero-name">Peter Möller</h1>
-    <p class="hero-tagline">I build things that think, move, and occasionally beat you at chess.</p>
-    <p class="hero-sub">Technical Informatica student, robot builder, occasional liquid-dispensing engineer.</p>
-    <a href="#work" class="hero-cta">See what I've built ↓</a>
+  <header class="hero" id="top">
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="terminal-title">peter@nhlstenden:~</span>
+      </div>
+      <div class="terminal-body">
+        <p class="term-line"><span class="prompt">$</span> whoami</p>
+        <h1 class="hero-name" id="typed-name"></h1>
+        <p class="term-line term-line-2"><span class="prompt">$</span> cat about.txt</p>
+        <p class="hero-tagline" id="typed-tagline"></p>
+        <p class="hero-sub">Technical Informatica student · robot builder · occasional liquid-dispensing engineer</p>
+        <a href="#work" class="hero-cta">see what I've built <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
   </header>
 
   <main>
 
     <section id="work" class="section">
-      <h2 class="section-heading"><span class="heading-index">01</span> Things I've built</h2>
+      <h2 class="section-heading"><span class="prompt-mark">$</span> ls ./work</h2>
 
       <div class="project-grid">
 
-        <article class="project-card" data-detail="Built for a head-to-head robotics competition — two Arduino-controlled bots race a circuit, first to finish wins. Handled motor control, line-following sensors, and way too much trial and error at 2am before the deadline.">
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="Built for a head-to-head robotics competition — two Arduino-controlled bots race a circuit, first to finish wins. Handled motor control, line-following sensors, and way too much trial and error at 2am before the deadline.">
           <div class="project-card-top">
-            <span class="project-tag">🏆 Winner</span>
+            <span class="project-tag">🏆 winner</span>
           </div>
           <h3>Battlebot</h3>
           <p>An Arduino-controlled racer built to beat other teams' bots around a circuit. It won.</p>
           <span class="project-more">tap for the story →</span>
         </article>
 
-        <article class="project-card" data-detail="A Raspberry Pi–driven dispenser that pumps an exact number of milliliters of liquid using a peristaltic pump, with a weight sensor closing the feedback loop for accuracy. Basically a tiny, opinionated bartender.">
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="A Raspberry Pi–driven dispenser that pumps an exact number of milliliters of liquid using a peristaltic pump, with a weight sensor closing the feedback loop for accuracy. Basically a tiny, opinionated bartender.">
           <div class="project-card-top">
-            <span class="project-tag">Raspberry Pi</span>
+            <span class="project-tag">raspberry pi</span>
           </div>
           <h3>Smart Liquid Dispenser</h3>
           <p>Pumps a precise volume of liquid using sensor feedback instead of guesswork.</p>
           <span class="project-more">tap for the story →</span>
         </article>
 
-        <article class="project-card" data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays back against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and getting comfortable with Linux along the way.">
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays back against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and getting comfortable with Linux along the way.">
           <div class="project-card-top">
-            <span class="project-tag">Machine Vision</span>
+            <span class="project-tag">machine vision</span>
           </div>
           <h3>Chess Robot</h3>
           <p>Sees the board, thinks about it, makes a move. No cheating (probably).</p>
@@ -66,7 +82,7 @@
     </section>
 
     <section id="about" class="section about-section">
-      <h2 class="section-heading"><span class="heading-index">02</span> A bit about me</h2>
+      <h2 class="section-heading"><span class="prompt-mark">$</span> cat me.md</h2>
       <div class="about-grid">
         <div class="about-text">
           <p>I'm a second-year Technical Informatica student at NHL Stenden, and most of what I enjoy building lives in the gap between software and hardware — the part where code stops being abstract and starts turning motors, pumping liquid, or looking at a chessboard through a camera.</p>
@@ -89,7 +105,7 @@
 
       <div class="timeline">
         <div class="timeline-item">
-          <span class="timeline-year">2025 — Now</span>
+          <span class="timeline-year">2025 — now</span>
           <div>
             <h4>Technische Informatica</h4>
             <p>NHL Stenden</p>
@@ -120,22 +136,25 @@
     </section>
 
     <section id="contact" class="section contact-section">
-      <h2 class="section-heading"><span class="heading-index">03</span> Say hi</h2>
+      <h2 class="section-heading"><span class="prompt-mark">$</span> mail --send</h2>
       <p class="contact-text">Got a robot that needs building, a project that needs a hand, or just want to talk shop? I'm around.</p>
       <div class="contact-links">
-        <a href="mailto:peetmoller92@gmail.com" class="contact-btn">Email me</a>
-        <a href="https://github.com/PJMoller" target="_blank" rel="noopener" class="contact-btn contact-btn-ghost">GitHub</a>
+        <button type="button" class="contact-btn" id="email-btn" data-email="peetmoller92@gmail.com">
+          <span id="email-btn-label">peetmoller92@gmail.com</span>
+        </button>
+        <a href="https://github.com/PJMoller" target="_blank" rel="noopener" class="contact-btn contact-btn-ghost">GitHub ↗</a>
       </div>
+      <p class="contact-hint" id="email-hint" aria-live="polite"></p>
     </section>
 
   </main>
 
   <footer class="footer">
-    <p>Built by Peter Möller · 2026</p>
+    <p>built by Peter Möller · 2026</p>
   </footer>
 
   <div class="modal-overlay" id="modal-overlay">
-    <div class="modal" id="modal">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal-close" id="modal-close" aria-label="Close">×</button>
       <h3 id="modal-title"></h3>
       <p id="modal-body"></p>
