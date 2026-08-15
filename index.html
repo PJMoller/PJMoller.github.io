@@ -3,6 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Möller — Technical Informatics Student</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-alt: #11161d;
+    --fg: #c9d1d9;
+    --accent: #39ff88;
+    --accent-dim: #2bb968;
+    --muted: #6e7681;
+    --border: #21262d;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px 8px 0 0;
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27c93f; }
+  .terminal-title { margin-left: 8px; color: var(--muted); font-size: 13px; }
+
+  .terminal-body {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+  }
+
+  .prompt { color: var(--accent); }
+  .path { color: #58a6ff; }
+
+  h1 {
+    font-size: 2rem;
+    margin: 4px 0 0;
+    color: #fff;
+  }
+  h1 .cursor {
+    display: inline-block;
+    width: 10px;
+    background: var(--accent);
+    animation: blink 1s step-start infinite;
+    margin-left: 4px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .subtitle {
+    color: var(--accent);
+    margin: 6px 0 0;
+    font-size: 1rem;
+  }
+
+  section {
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .section-title::before { content: "// "; color: var(--accent-dim); }
+
+  .card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    margin: 0 0 4px;
+    color: #fff;
+    font-size: 1.05rem;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  li { margin-bottom: 4px; }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    background: rgba(57,255,136,0.08);
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+
+  .contact-list a { display: inline-block; margin-right: 18px; }
+
+  footer {
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  code.inline {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="terminal-bar">
+    <span class="dot red"></span>
+    <span class="dot yellow"></span>
+    <span class="dot green"></span>
+    <span class="terminal-title">peter@nhlstenden: ~</span>
+  </div>
+  <div class="terminal-body">
+    <div><span class="prompt">$</span> whoami</div>
+    <h1>Peter Möller<span class="cursor">&nbsp;</span></h1>
+    <div class="subtitle">Student Technische Informatica @ NHL Stenden</div>
+    <p style="margin-top:16px; color: var(--fg);">
+      Second-year Technical Informatica student with hands-on experience across
+      <code class="inline">C</code>, <code class="inline">C++</code>, <code class="inline">Python</code>,
+      <code class="inline">Java</code>, <code class="inline">HTML</code>, <code class="inline">SQL</code> and
+      <code class="inline">R</code>. I like building things that bridge software and hardware —
+      robots, sensors, and the code that makes them behave.
+    </p>
+  </div>
+
+  <section>
+    <div class="section-title">skills</div>
+    <div class="card">
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">C++</span>
+        <span class="tag">SQL</span>
+        <span class="tag">R</span>
+        <span class="tag">Java</span>
+        <span class="tag">HTML</span>
+        <span class="tag">Project Management</span>
+        <span class="tag">SCRUM</span>
+        <span class="tag">Agile</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">projects</div>
+
+    <div class="card">
+      <h3>Chess Robot</h3>
+      <p>A robot that uses machine vision to play chess against a human opponent.</p>
+      <ul>
+        <li>Machine vision for board/piece recognition</li>
+        <li>Bridging between Python and C</li>
+        <li>3D-printed components, running on Linux</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Smart Liquid Dispenser</h3>
+      <p>A dispenser that accurately pumps a given volume of liquid.</p>
+      <ul>
+        <li>Built on Raspberry Pi</li>
+        <li>Peristaltic pump control</li>
+        <li>Weight sensor feedback for precision</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Battlebot — 🏆 Winner</h3>
+      <p>Teams competed head-to-head with Arduino-controlled robots racing a circuit.</p>
+      <ul>
+        <li>Arduino programming</li>
+        <li>Motor control</li>
+        <li>Multiple sensor integration</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">education</div>
+    <div class="card">
+      <h3>Technische Informatica</h3>
+      <div class="meta">NHL Stenden · 2025 – Present</div>
+    </div>
+    <div class="card">
+      <h3>Expert IT Systems and Devices</h3>
+      <div class="meta">Alfa-college Groningen · 2020 – 2023</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">experience / internships</div>
+    <div class="card">
+      <h3>Kantor</h3>
+      <div class="meta">Appingedam · Feb 2023 – Jun 2023</div>
+    </div>
+    <div class="card">
+      <h3>Multicast</h3>
+      <div class="meta">Emmen · Sep 2021 – Feb 2022</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">contact</div>
+    <div class="card contact-list">
+      <a href="mailto:peetmoller92@gmail.com">peetmoller92@gmail.com</a>
+      <a href="https://github.com/PJMoller" target="_blank" rel="noopener">github.com/PJMoller</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 Peter Möller — built with <code class="inline">&lt;3</code> and a terminal
+  </footer>
+
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peter MÃ¶ller â Technical Informatics Student</title>
 <style>
   :root {
