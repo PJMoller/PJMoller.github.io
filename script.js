@@ -1,35 +1,9 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---- Typing effect for hero ----
-function typeInto(el, text, speed, done) {
-  if (prefersReducedMotion) {
-    el.textContent = text;
-    if (done) done();
-    return;
-  }
-  const caret = document.createElement('span');
-  caret.className = 'caret';
-  caret.textContent = ' ';
-  let i = 0;
-  el.textContent = '';
-  el.appendChild(caret);
-  const timer = setInterval(() => {
-    if (i >= text.length) {
-      clearInterval(timer);
-      if (done) done();
-      return;
-    }
-    caret.insertAdjacentText('beforebegin', text[i]);
-    i++;
-  }, speed);
-}
-
-const nameEl = document.getElementById('typed-name');
-const taglineEl = document.getElementById('typed-tagline');
-
-typeInto(nameEl, 'Peter Möller', 55, () => {
-  typeInto(taglineEl, "I build things that think, move, and occasionally beat you at chess.", 18);
-});
+// Hero name/tagline typing is a pure CSS animation (see style.css) so it
+// never depends on a JS timer — the real text is in the HTML from the
+// start, and CSS just reveals it. No risk of a blank hero on slow/throttled
+// tabs.
 
 // ---- Reveal sections on scroll ----
 const sections = document.querySelectorAll('.section');

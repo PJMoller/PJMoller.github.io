@@ -130,12 +130,6 @@ a { color: inherit; }
   min-height: 1.2em;
   letter-spacing: -1px;
 }
-.hero-name .caret {
-  display: inline-block;
-  width: 0.5em;
-  background: var(--accent);
-  animation: blink 1s step-start infinite;
-}
 
 .hero-tagline {
   font-size: clamp(1rem, 2.2vw, 1.25rem);
@@ -143,11 +137,42 @@ a { color: inherit; }
   max-width: 620px;
   min-height: 1.6em;
 }
-.hero-tagline .caret {
+
+/* Typing reveal: content is real text in the HTML from the start (so it
+   always shows correctly even without JS or CSS animation support) —
+   the animation just clips it in with a fixed-step reveal + blinking caret. */
+.type-css {
   display: inline-block;
-  width: 0.5em;
-  background: var(--accent);
-  animation: blink 1s step-start infinite;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 12ch;
+  border-right: 0.1em solid var(--accent);
+  animation:
+    type-reveal-name 0.85s steps(12, end) forwards,
+    caret-blink 0.8s step-end 3;
+}
+
+.type-css-tagline {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  width: 57ch;
+  border-right: 0.1em solid var(--accent);
+  opacity: 0;
+  animation:
+    tagline-appear 0s 0.9s forwards,
+    type-reveal-tagline 1.4s steps(57, end) 0.9s forwards,
+    caret-blink 0.8s step-end 4 2.3s;
+}
+
+@keyframes type-reveal-name { from { width: 0; } }
+@keyframes type-reveal-tagline { from { width: 0; } }
+@keyframes tagline-appear { to { opacity: 1; } }
+@keyframes caret-blink { 50% { border-color: transparent; } }
+
+@media (max-width: 520px) {
+  .type-css-tagline { white-space: normal; width: auto; max-width: 100%; border-right: none; animation: tagline-appear 0s 0.9s forwards; opacity: 0; }
 }
 
 .hero-sub {
@@ -446,7 +471,14 @@ main {
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .nav-cursor, .hero-name .caret, .hero-tagline .caret { animation: none; }
+  .nav-cursor { animation: none; }
+  .type-css, .type-css-tagline {
+    animation: none !important;
+    width: auto !important;
+    opacity: 1 !important;
+    border-right: none !important;
+    white-space: normal;
+  }
   .section { transition: none; opacity: 1; transform: none; }
 }
 
