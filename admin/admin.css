@@ -25,20 +25,9 @@
   box-shadow: 0 0 0 1px rgba(57, 255, 136, 0.03), 0 30px 60px -25px rgba(0, 0, 0, 0.6);
 }
 
-.lock-logo {
-  display: inline-block;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.85rem;
-  margin-bottom: 22px;
-  opacity: 0.8;
-}
-
 .lock-icon {
   color: var(--accent);
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   opacity: 0.9;
 }
 
