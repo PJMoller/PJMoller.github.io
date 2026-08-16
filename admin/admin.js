@@ -5,9 +5,7 @@
 // ever present in this file or shipped to the browser. This file only
 // ever sees a short-lived session token after a successful login.
 
-// Fill this in once the Worker is deployed, e.g.
-// 'https://pjmoller-admin.yoursubdomain.workers.dev'
-const WORKER_URL = '';
+const WORKER_URL = 'https://pjmoller-admin.peetmoller92.workers.dev';
 
 const SESSION_KEY = 'pjmoller_admin_session';
 
