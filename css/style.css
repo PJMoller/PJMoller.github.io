@@ -281,6 +281,14 @@ main {
 }
 .project-link:hover { color: var(--accent); text-decoration: underline; }
 
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 10px;
+}
+.project-links .project-link { margin-top: 0; }
+
 /* ---- About ---- */
 .about-grid {
   display: grid;
