@@ -12,6 +12,7 @@
   position: relative;
   z-index: 1;
 }
+.lock-screen[hidden] { display: none; }
 
 .lock-card {
   width: 100%;
