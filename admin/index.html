@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>admin · Peter Möller</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%2339ff88' font-family='monospace'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-wrap">
+
+    <header class="admin-header">
+      <a href="../" class="nav-logo">PM</a>
+      <h1 class="admin-title"><span class="prompt-mark">$</span> admin ./projects</h1>
+    </header>
+
+    <section class="admin-panel" id="auth-panel">
+      <h2 class="admin-panel-heading">connect</h2>
+      <p class="admin-hint">
+        Paste a GitHub personal access token with read/write access to
+        <code>PJMoller/PJMoller.github.io</code> (a fine-grained token scoped to just this
+        repo, with Contents: Read and write, is the safest option). It's stored only in
+        this browser's local storage and only ever sent straight to GitHub's API,
+        never anywhere else.
+      </p>
+      <div class="admin-row">
+        <input type="password" id="token-input" placeholder="github_pat_..." class="admin-input" autocomplete="off">
+        <button id="load-btn" class="hero-cta" type="button">load projects</button>
+        <button id="clear-token-btn" class="contact-btn contact-btn-ghost" type="button">forget token</button>
+      </div>
+      <p class="admin-status" id="auth-status"></p>
+    </section>
+
+    <section class="admin-panel" id="import-panel" hidden>
+      <h2 class="admin-panel-heading">import from github</h2>
+      <p class="admin-hint">Paste a repo URL to pull in its name and primary language as a starting point, then fill in the story yourself.</p>
+      <div class="admin-row">
+        <input type="text" id="import-url" placeholder="https://github.com/owner/repo" class="admin-input">
+        <button id="import-btn" class="hero-cta" type="button">import</button>
+      </div>
+      <p class="admin-status" id="import-status"></p>
+    </section>
+
+    <section class="admin-panel" id="projects-panel" hidden>
+      <h2 class="admin-panel-heading">projects <span class="admin-panel-sub">(top of the list = featured order, toggle "featured" to move between the grid and the compact list)</span></h2>
+      <div id="projects-editor" class="admin-projects"></div>
+      <button id="add-project-btn" class="contact-btn contact-btn-ghost" type="button">+ add project manually</button>
+    </section>
+
+    <div class="admin-save-bar" id="save-bar" hidden>
+      <button id="save-btn" class="hero-cta" type="button">save to github</button>
+      <span class="admin-status" id="save-status"></span>
+    </div>
+
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

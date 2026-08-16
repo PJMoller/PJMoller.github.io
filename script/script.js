@@ -63,7 +63,7 @@ function closeModal() {
   if (lastFocused) lastFocused.focus();
 }
 
-document.querySelectorAll('.project-card, .project-row').forEach(card => {
+function bindCardInteraction(card) {
   card.addEventListener('click', () => openModal(card));
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -71,7 +71,97 @@ document.querySelectorAll('.project-card, .project-row').forEach(card => {
       openModal(card);
     }
   });
+}
+
+modalClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) closeModal();
 });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+});
+
+// ---- Projects: fetched from projects.json so the /admin panel can add,
+// edit, reorder, and toggle which ones are featured without anyone
+// touching this file or the HTML by hand. ----
+function repoLinksMarkup(repos, linkClass) {
+  if (!repos || repos.length === 0) return '';
+  const links = repos
+    .map(r => `<a class="${linkClass}" href="${r.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${r.label} ↗</a>`)
+    .join('');
+  if (repos.length > 1) return `<div class="project-links">${links}</div>`;
+  return links;
+}
+
+function buildCard(project) {
+  const article = document.createElement('article');
+  article.className = 'project-card';
+  article.tabIndex = 0;
+  article.setAttribute('role', 'button');
+  article.setAttribute('aria-haspopup', 'dialog');
+  article.dataset.detail = project.detail;
+  article.innerHTML = `
+    <div class="project-card-top">
+      <div class="project-tags">
+        ${project.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+    <h3>${project.title}</h3>
+    <p>${project.blurb}</p>
+    <span class="project-more">tap for the story →</span>
+    ${repoLinksMarkup(project.repos, 'project-link')}
+  `;
+  return article;
+}
+
+function buildRow(project) {
+  const row = document.createElement('div');
+  row.className = 'project-row';
+  row.tabIndex = 0;
+  row.setAttribute('role', 'button');
+  row.setAttribute('aria-haspopup', 'dialog');
+  row.dataset.title = project.title;
+  row.dataset.detail = project.detail;
+  const repo = project.repos && project.repos[0];
+  row.innerHTML = `
+    <div class="project-row-main">
+      <span class="project-row-name">${project.title}</span>
+      <span class="project-row-tags">
+        ${project.tags.map(t => `<span class="project-row-tag">${t}</span>`).join('')}
+      </span>
+    </div>
+    ${repo ? `<a class="project-row-link" href="${repo.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${repo.label} ↗</a>` : ''}
+  `;
+  return row;
+}
+
+async function renderProjects() {
+  const grid = document.getElementById('project-grid');
+  const list = document.getElementById('project-list');
+  const moreHeading = document.getElementById('work-more-heading');
+  if (!grid || !list) return;
+
+  let projects;
+  try {
+    projects = await fetch('projects.json', { cache: 'no-store' }).then(r => r.json());
+  } catch (err) {
+    grid.textContent = "couldn't load projects right now, try refreshing.";
+    return;
+  }
+
+  projects.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const featured = projects.filter(p => p.featured);
+  const rest = projects.filter(p => !p.featured);
+
+  featured.forEach(p => grid.appendChild(buildCard(p)));
+  rest.forEach(p => list.appendChild(buildRow(p)));
+
+  if (moreHeading) moreHeading.hidden = rest.length === 0;
+
+  document.querySelectorAll('.project-card, .project-row').forEach(bindCardInteraction);
+}
+
+renderProjects();
 
 modalClose.addEventListener('click', closeModal);
 overlay.addEventListener('click', (e) => {

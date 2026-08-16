@@ -355,6 +355,11 @@ main {
 }
 .project-row-link:hover { color: var(--accent); text-decoration: underline; }
 
+.project-noscript {
+  color: var(--fg-dim);
+  font-size: 0.85rem;
+}
+
 /* ---- About ---- */
 .about-grid {
   display: grid;
