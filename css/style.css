@@ -237,6 +237,12 @@ main {
 
 .project-card-top { margin-bottom: 14px; }
 
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .project-tag {
   display: inline-block;
   font-size: 0.72rem;

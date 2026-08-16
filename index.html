@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peter Möller</title>
-<meta name="description" content="Peter Möller — Computer Science student building robots and small hardware projects.">
+<meta name="description" content="Peter Möller, Computer Science student building robots and small hardware projects.">
 <meta name="theme-color" content="#0d1117">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%2339ff88' font-family='monospace'%3E%3E_%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 <noscript><style>.section{opacity:1!important;transform:none!important}#circuit-bg{display:none}</style></noscript>
 </head>
 <body>
@@ -51,54 +51,84 @@
       <div class="project-grid">
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="Team project for a robotics competition: Arduino-controlled bots racing each other around a circuit, first to finish wins. I worked on motor control and the line-following sensors. Lots of debugging under deadline pressure, but we came out on top.">
+          data-detail="A competition robot I built with a team, twice. The first version was called Mort, the second one is Sebastiaan. It follows a line using light sensors, uses a distance sensor to start once a flag is lifted, picks up an object with a gripper, steers around obstacles, and drops the object on a target square at the end. We won with this version.">
           <div class="project-card-top">
-            <span class="project-tag">🏆 winner</span>
+            <div class="project-tags">
+              <span class="project-tag">C++</span>
+              <span class="project-tag">line follower</span>
+            </div>
           </div>
-          <h3>Battlebot</h3>
-          <p>Built with a couple of teammates for a head-to-head robotics competition. We won.</p>
+          <h3>Mort &amp; Sebastiaan</h3>
+          <p>Built this robot twice with a team: first as Mort, then rebuilt as Sebastiaan. Line following, obstacle handling, a gripper to pick up an object. We won with the second one.</p>
           <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/BryanPotze/Sebastiaan" target="_blank" rel="noopener" onclick="event.stopPropagation()">team repo ↗</a>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="A group project with Sven and Lennon: a Raspberry Pi–driven dispenser that pumps an exact number of milliliters of liquid using a peristaltic pump, with a weight sensor closing the feedback loop for accuracy.">
+          data-detail="Group project with Sven and Lennon. A Raspberry Pi controls a peristaltic pump to dispense a set number of milliliters of liquid, and a load cell (HX711) checks the actual weight against the target so it can correct itself.">
           <div class="project-card-top">
-            <span class="project-tag">raspberry pi</span>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Raspberry Pi</span>
+            </div>
           </div>
           <h3>Smart Liquid Dispenser</h3>
-          <p>Built with two teammates — pumps a precise amount of liquid using sensor feedback instead of guesswork.</p>
+          <p>Built with Sven and Lennon. Pumps a set amount of liquid with a peristaltic pump, and a load cell checks the weight actually matches.</p>
           <span class="project-more">tap for the story →</span>
           <a class="project-link" href="https://github.com/PJMoller/SmartDispenser" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays a move against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and learning Linux along the way.">
+          data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays a move against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and learning Linux along the way. This one never got a public repo, the code stayed local on the robot's Pi.">
           <div class="project-card-top">
-            <span class="project-tag">machine vision</span>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">machine vision</span>
+            </div>
           </div>
           <h3>Chess Robot</h3>
-          <p>Sees the board, works out the position, and plays a move — using machine vision.</p>
+          <p>Watches a chessboard with a camera, works out the position, and plays a move back.</p>
           <span class="project-more">tap for the story →</span>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="Built with a team for a zoo (Wildlands): a Flask dashboard that predicts daily visitor numbers using LightGBM models trained on weather, event, and historical visitor data. Includes a login system, a 365-day forecast, and sliders for testing different scenarios. Deployed with Docker.">
+          data-detail="Built with a team for Wildlands, a zoo. Our team name was Procyon. A Flask dashboard predicts daily visitor numbers using LightGBM models trained on weather, event, and historical visitor data. Includes a login system, a 365-day forecast, and sliders to test different scenarios. Deployed with Docker.">
           <div class="project-card-top">
-            <span class="project-tag">machine learning</span>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Flask</span>
+            </div>
           </div>
-          <h3>Procyon</h3>
-          <p>A visitor-prediction dashboard for a zoo, built with a small team, using weather and event data to forecast how busy the park will be.</p>
+          <h3>Wildlands visitor predictor</h3>
+          <p>Built with a team (we called ourselves Procyon) for Wildlands zoo. Uses weather and event data to forecast how busy the park will be on a given day.</p>
           <span class="project-more">tap for the story →</span>
           <a class="project-link" href="https://github.com/PJMoller/Wildlands_Procyon" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="A desktop pet built with Python and Tkinter: a little frog walks around your screen, notices which application is focused, and reacts with speech-bubble commentary generated by a local LLM (via Ollama). Mostly an excuse to mess with window tracking and prompt design.">
+          data-detail="Built with a friend for an Arduino Uno R4. Reads temperature, pH, turbidity, and flow sensors, drives a pump and servos, and controls an addressable LED strip. Uses a Raspberry Pi over a serial connection to handle heavier data requests so the Arduino doesn't run out of memory.">
           <div class="project-card-top">
-            <span class="project-tag">just for fun</span>
+            <div class="project-tags">
+              <span class="project-tag">C++</span>
+              <span class="project-tag">Arduino</span>
+            </div>
+          </div>
+          <h3>Fishsee</h3>
+          <p>An aquarium monitor built with a friend. Tracks temperature, pH, turbidity, and flow, and manages a pump and an LED strip.</p>
+          <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/Fishsee/Arduino" target="_blank" rel="noopener" onclick="event.stopPropagation()">team repo ↗</a>
+        </article>
+
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="A desktop pet built with Python and Tkinter. A little frog walks around your screen, notices which application is focused, and reacts with speech-bubble commentary generated by a local LLM through Ollama. Mostly an excuse to mess with window tracking and prompt design.">
+          <div class="project-card-top">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">local LLM</span>
+            </div>
           </div>
           <h3>frogpet</h3>
-          <p>A tiny frog that lives on your desktop and comments on whatever app you're using, powered by a local LLM.</p>
+          <p>A tiny frog that lives on your desktop, notices which app you're using, and comments on it with a local LLM.</p>
           <span class="project-more">tap for the story →</span>
           <a class="project-link" href="https://github.com/PJMoller/frogpet" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
@@ -110,9 +140,9 @@
       <h2 class="section-heading"><span class="prompt-mark">$</span> cat me.md</h2>
       <div class="about-grid">
         <div class="about-text">
-          <p>I'm a second-year Computer Science student at NHL Stenden — technically the program is called "Technische Informatica", which doesn't translate directly, but it's closest to Computer Science or Computer Engineering. Most of what I like building sits between software and hardware: the point where code stops being abstract and starts turning a motor, pumping liquid, or reading a chessboard through a camera.</p>
-          <p>Along the way I've picked up Python, C, C++, Java, SQL, R and HTML, plus a decent sense of how to keep a project from falling apart — some SCRUM, some Agile, mostly just keeping a to-do list I actually follow.</p>
-          <p>Before NHL Stenden I trained as an IT systems and devices technician at Alfa-college, where I also did two internships — at Multicast in Emmen and Kantor in Appingedam — as part of the program. That was my first real look at how this stuff works outside a classroom.</p>
+          <p>I'm a second-year Computer Science student at NHL Stenden. Technically the program is called "Technische Informatica", which doesn't translate directly, but it's closest to Computer Science or Computer Engineering. Most of what I like building sits between software and hardware, the point where code stops being abstract and starts turning a motor, pumping liquid, or reading a chessboard through a camera.</p>
+          <p>Along the way I've picked up Python, C, C++, Java, SQL, R and HTML, plus a decent sense of how to keep a project from falling apart. Some SCRUM, some Agile, but mostly just keeping a to-do list I actually follow.</p>
+          <p>Before NHL Stenden I trained as an IT systems and devices technician at Alfa-college, where I also did two internships as part of the program: one at Multicast in Emmen and one at Kantor in Appingedam. That was my first real look at how this stuff works outside a classroom.</p>
         </div>
         <div class="about-skills">
           <span class="skill-pill">Python</span>
@@ -130,7 +160,7 @@
 
       <div class="timeline">
         <div class="timeline-item">
-          <span class="timeline-year">2025 — now</span>
+          <span class="timeline-year">2025 – now</span>
           <div>
             <h4>Technische Informatica</h4>
             <p>NHL Stenden</p>
@@ -157,14 +187,14 @@
     </section>
 
     <section id="play" class="section play-section">
-      <h2 class="section-heading"><span class="prompt-mark">$</span> ./tiny_game</h2>
-      <p class="play-intro">A small distraction. Dodge the bugs — they only get faster.</p>
+      <h2 class="section-heading"><span class="prompt-mark">$</span> ./frog.exe</h2>
+      <p class="play-intro">Catch flies, dodge bees. Basically frogpet's day job.</p>
 
       <div class="game-wrap">
-        <canvas id="game-canvas" width="600" height="320" aria-label="Debug Dash game"></canvas>
+        <canvas id="game-canvas" width="600" height="320" aria-label="Fly Catcher game"></canvas>
         <div class="game-overlay" id="game-overlay">
-          <p class="game-overlay-title" id="game-overlay-title">Debug Dash</p>
-          <p class="game-overlay-sub" id="game-overlay-sub">Arrow keys or A/D to move. Don't touch the bugs.</p>
+          <p class="game-overlay-title" id="game-overlay-title">Fly Catcher</p>
+          <p class="game-overlay-sub" id="game-overlay-sub">Arrow keys or A/D to move. Catch the flies, avoid the bees.</p>
           <button type="button" class="hero-cta game-btn" id="game-btn">start</button>
         </div>
       </div>
@@ -200,6 +230,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script/script.js"></script>
 </body>
 </html>

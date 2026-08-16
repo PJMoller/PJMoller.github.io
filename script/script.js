@@ -1,8 +1,8 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Hero tagline typing is a pure CSS animation (see style.css) so it never
-// depends on a JS timer — the real text is in the HTML from the start,
-// and CSS just reveals it.
+// Hero tagline typing is a pure CSS animation (see css/style.css) so it
+// never depends on a JS timer, the real text is in the HTML from the
+// start and CSS just reveals it.
 
 // ---- Reveal sections on scroll ----
 const sections = document.querySelectorAll('.section');
@@ -70,10 +70,10 @@ document.addEventListener('keydown', (e) => {
 
 // ---- Email button ----
 // This is a real `<a href="mailto:...">` so the browser handles opening
-// the mail client itself, synchronously, as part of the click — no JS
-// in the way. We just piggyback a clipboard copy on the same click
-// (without awaiting before letting the link do its thing, since an
-// `await` before a navigation can cause browsers to silently drop it).
+// the mail client itself, synchronously, as part of the click, no JS in
+// the way. We just piggyback a clipboard copy on the same click without
+// awaiting before letting the link do its thing, since an `await` before
+// a navigation can cause browsers to silently drop it.
 const emailBtn = document.getElementById('email-btn');
 const emailHint = document.getElementById('email-hint');
 if (emailBtn) {
@@ -177,7 +177,7 @@ if (!prefersReducedMotion) {
   canvas.style.display = 'none';
 }
 
-// ---- Debug Dash: tiny dodge-the-bugs game ----
+// ---- Fly Catcher: a tiny frog game ----
 (function () {
   const gc = document.getElementById('game-canvas');
   if (!gc) return;
@@ -192,30 +192,34 @@ if (!prefersReducedMotion) {
   const leftBtn = document.getElementById('game-left');
   const rightBtn = document.getElementById('game-right');
 
-  const PLAYER_W = 34, PLAYER_H = 22;
-  let player, bugs, score, speedMul, spawnTimer, spawnEvery, state, lastTime, movingLeft, movingRight;
+  const FROG_W = 36, FROG_H = 24;
+  let frog, items, score, speedMul, spawnTimer, spawnEvery, state, lastTime, movingLeft, movingRight, tongueFrame;
 
   function reset() {
-    player = { x: GW / 2 - PLAYER_W / 2, y: GH - PLAYER_H - 14, w: PLAYER_W, h: PLAYER_H, vx: 0 };
-    bugs = [];
+    frog = { x: GW / 2 - FROG_W / 2, y: GH - FROG_H - 14, w: FROG_W, h: FROG_H };
+    items = [];
     score = 0;
     speedMul = 1;
     spawnTimer = 0;
-    spawnEvery = 900;
+    spawnEvery = 700;
     state = 'playing';
     lastTime = performance.now();
     movingLeft = false;
     movingRight = false;
+    tongueFrame = 0;
   }
 
-  function spawnBug() {
-    const size = 14 + Math.random() * 10;
-    bugs.push({
+  function spawnItem() {
+    const isBee = Math.random() < 0.3;
+    const size = isBee ? 16 : 12;
+    items.push({
+      type: isBee ? 'bee' : 'fly',
       x: Math.random() * (GW - size),
       y: -size,
       w: size,
       h: size,
-      vy: (60 + Math.random() * 40) * speedMul
+      vy: (70 + Math.random() * 50) * speedMul,
+      wob: Math.random() * Math.PI * 2
     });
   }
 
@@ -223,25 +227,53 @@ if (!prefersReducedMotion) {
     return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
   }
 
-  function drawPlayer() {
+  function drawFrog() {
     gctx.fillStyle = '#39ff88';
-    gctx.fillRect(player.x, player.y, player.w, player.h);
+    gctx.beginPath();
+    gctx.ellipse(frog.x + frog.w / 2, frog.y + frog.h / 2 + 4, frog.w / 2, frog.h / 2, 0, 0, Math.PI * 2);
+    gctx.fill();
+    // eyes
     gctx.fillStyle = '#0d1117';
-    gctx.font = '12px monospace';
-    gctx.textAlign = 'center';
-    gctx.fillText('</>', player.x + player.w / 2, player.y + player.h / 2 + 4);
+    gctx.beginPath();
+    gctx.arc(frog.x + frog.w * 0.32, frog.y + 6, 3, 0, Math.PI * 2);
+    gctx.arc(frog.x + frog.w * 0.68, frog.y + 6, 3, 0, Math.PI * 2);
+    gctx.fill();
+    if (tongueFrame > 0) {
+      gctx.strokeStyle = '#ff5f56';
+      gctx.lineWidth = 3;
+      gctx.beginPath();
+      gctx.moveTo(frog.x + frog.w / 2, frog.y + 4);
+      gctx.lineTo(frog.x + frog.w / 2, frog.y - 14);
+      gctx.stroke();
+      tongueFrame--;
+    }
   }
 
-  function drawBug(b) {
-    gctx.fillStyle = '#ff5f56';
+  function drawFly(it) {
+    gctx.fillStyle = '#1f2530';
     gctx.beginPath();
-    gctx.ellipse(b.x + b.w / 2, b.y + b.h / 2, b.w / 2, b.h / 2.4, 0, 0, Math.PI * 2);
+    gctx.ellipse(it.x + it.w / 2, it.y + it.h / 2, it.w / 2, it.h / 2, 0, 0, Math.PI * 2);
     gctx.fill();
-    gctx.strokeStyle = 'rgba(255,255,255,0.4)';
-    gctx.lineWidth = 1;
+    gctx.fillStyle = 'rgba(88,166,255,0.5)';
+    const wob = Math.sin(it.wob) * 3;
     gctx.beginPath();
-    gctx.moveTo(b.x, b.y + b.h / 2);
-    gctx.lineTo(b.x + b.w, b.y + b.h / 2);
+    gctx.ellipse(it.x + it.w / 2 - 4, it.y + it.h / 2 - 4 + wob, 4, 2, 0.4, 0, Math.PI * 2);
+    gctx.ellipse(it.x + it.w / 2 + 4, it.y + it.h / 2 - 4 - wob, 4, 2, -0.4, 0, Math.PI * 2);
+    gctx.fill();
+  }
+
+  function drawBee(it) {
+    gctx.fillStyle = '#ffbd2e';
+    gctx.beginPath();
+    gctx.ellipse(it.x + it.w / 2, it.y + it.h / 2, it.w / 2, it.h / 2.4, 0, 0, Math.PI * 2);
+    gctx.fill();
+    gctx.strokeStyle = '#0d1117';
+    gctx.lineWidth = 2;
+    gctx.beginPath();
+    gctx.moveTo(it.x + it.w * 0.3, it.y);
+    gctx.lineTo(it.x + it.w * 0.3, it.y + it.h);
+    gctx.moveTo(it.x + it.w * 0.6, it.y);
+    gctx.lineTo(it.x + it.w * 0.6, it.y + it.h);
     gctx.stroke();
   }
 
@@ -249,7 +281,7 @@ if (!prefersReducedMotion) {
     gctx.fillStyle = 'rgba(201,209,217,0.85)';
     gctx.font = '13px monospace';
     gctx.textAlign = 'left';
-    gctx.fillText('score: ' + Math.floor(score), 10, 20);
+    gctx.fillText('flies caught: ' + score, 10, 20);
   }
 
   function loop(now) {
@@ -259,36 +291,43 @@ if (!prefersReducedMotion) {
 
     gctx.clearRect(0, 0, GW, GH);
 
-    const speed = 220;
-    if (movingLeft) player.x -= speed * (dt / 1000);
-    if (movingRight) player.x += speed * (dt / 1000);
-    player.x = Math.max(0, Math.min(GW - player.w, player.x));
+    const speed = 240;
+    if (movingLeft) frog.x -= speed * (dt / 1000);
+    if (movingRight) frog.x += speed * (dt / 1000);
+    frog.x = Math.max(0, Math.min(GW - frog.w, frog.x));
 
     spawnTimer += dt;
     if (spawnTimer >= spawnEvery) {
       spawnTimer = 0;
-      spawnBug();
-      spawnEvery = Math.max(280, spawnEvery - 12);
+      spawnItem();
+      spawnEvery = Math.max(320, spawnEvery - 10);
     }
 
-    speedMul = 1 + score / 4000;
-    score += dt / 16;
+    speedMul = 1 + score / 30;
 
-    for (let i = bugs.length - 1; i >= 0; i--) {
-      const b = bugs[i];
-      b.y += b.vy * (dt / 1000);
-      if (b.y > GH) {
-        bugs.splice(i, 1);
+    for (let i = items.length - 1; i >= 0; i--) {
+      const it = items[i];
+      it.y += it.vy * (dt / 1000);
+      it.wob += dt / 120;
+      if (it.y > GH) {
+        items.splice(i, 1);
         continue;
       }
-      if (rectsOverlap(player, b)) {
-        gameOver();
-        return;
+      if (rectsOverlap(frog, it)) {
+        if (it.type === 'fly') {
+          score++;
+          tongueFrame = 6;
+          items.splice(i, 1);
+          continue;
+        } else {
+          gameOver();
+          return;
+        }
       }
-      drawBug(b);
+      if (it.type === 'fly') drawFly(it); else drawBee(it);
     }
 
-    drawPlayer();
+    drawFrog();
     drawScore();
 
     requestAnimationFrame(loop);
@@ -296,8 +335,8 @@ if (!prefersReducedMotion) {
 
   function gameOver() {
     state = 'gameover';
-    overlayTitle.textContent = 'busted';
-    overlaySub.textContent = `You survived a score of ${Math.floor(score)}. Try again?`;
+    overlayTitle.textContent = 'stung!';
+    overlaySub.textContent = `You caught ${score} flies before a bee got you. Try again?`;
     startBtn.textContent = 'play again';
     overlayEl.classList.remove('hidden');
   }
@@ -338,6 +377,5 @@ if (!prefersReducedMotion) {
   bindHold(leftBtn, (v) => { movingLeft = v; });
   bindHold(rightBtn, (v) => { movingRight = v; });
 
-  // initial idle frame
   gctx.clearRect(0, 0, GW, GH);
 })();
