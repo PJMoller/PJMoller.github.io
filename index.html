@@ -51,6 +51,21 @@
       <div class="project-grid">
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="Built with a team for Wildlands, a zoo. Our team name was Procyon. A Flask dashboard predicts daily visitor numbers using machine learning, LightGBM models trained on weather, event, and historical visitor data. Includes a login system, a 365-day forecast, and sliders to test different scenarios. Deployed with Docker.">
+          <div class="project-card-top">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Flask</span>
+              <span class="project-tag">machine learning</span>
+            </div>
+          </div>
+          <h3>Wildlands visitor predictor</h3>
+          <p>Built with a team (we called ourselves Procyon) for Wildlands zoo. Uses machine learning on weather and event data to forecast how busy the park will be on a given day.</p>
+          <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/PJMoller/Wildlands_Procyon" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
+        </article>
+
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
           data-detail="A competition robot I built with a team, twice, on Arduino. The first version, Mort, had to solve a physical maze, its code lives on a branch called Physical-Maze in a teammate's repo. The second, Sebastiaan, is a line follower: it follows a line using light sensors, uses a distance sensor to start once a flag is lifted, picks up an object with a gripper, steers around obstacles, and drops the object on a target square at the end. We won with Sebastiaan.">
           <div class="project-card-top">
             <div class="project-tags">
@@ -68,20 +83,6 @@
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="Group project with Sven and Lennon. A Raspberry Pi controls a peristaltic pump to dispense a set number of milliliters of liquid, and a load cell (HX711) checks the actual weight against the target so it can correct itself.">
-          <div class="project-card-top">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Raspberry Pi</span>
-            </div>
-          </div>
-          <h3>Smart Liquid Dispenser</h3>
-          <p>Built with Sven and Lennon. Pumps a set amount of liquid with a peristaltic pump, and a load cell checks the weight actually matches.</p>
-          <span class="project-more">tap for the story →</span>
-          <a class="project-link" href="https://github.com/PJMoller/SmartDispenser" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
-        </article>
-
-        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
           data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays a move against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and learning Linux along the way.">
           <div class="project-card-top">
             <div class="project-tags">
@@ -95,48 +96,47 @@
           <a class="project-link" href="https://github.com/Nannerscube/HelloWorld" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
 
-        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="Built with a team for Wildlands, a zoo. Our team name was Procyon. A Flask dashboard predicts daily visitor numbers using machine learning, LightGBM models trained on weather, event, and historical visitor data. Includes a login system, a 365-day forecast, and sliders to test different scenarios. Deployed with Docker.">
-          <div class="project-card-top">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Flask</span>
-              <span class="project-tag">machine learning</span>
-            </div>
-          </div>
-          <h3>Wildlands visitor predictor</h3>
-          <p>Built with a team (we called ourselves Procyon) for Wildlands zoo. Uses machine learning on weather and event data to forecast how busy the park will be on a given day.</p>
-          <span class="project-more">tap for the story →</span>
-          <a class="project-link" href="https://github.com/PJMoller/Wildlands_Procyon" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
-        </article>
+      </div>
 
-        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+      <h3 class="work-more-heading"><span class="prompt-mark">$</span> ls -la ./more</h3>
+
+      <div class="project-list">
+
+        <div class="project-row" tabindex="0" role="button" aria-haspopup="dialog" data-title="Smart Liquid Dispenser"
+          data-detail="Group project with Sven and Lennon. A Raspberry Pi controls a peristaltic pump to dispense a set number of milliliters of liquid, and a load cell (HX711) checks the actual weight against the target so it can correct itself.">
+          <div class="project-row-main">
+            <span class="project-row-name">Smart Liquid Dispenser</span>
+            <span class="project-row-tags">
+              <span class="project-row-tag">Python</span>
+              <span class="project-row-tag">Raspberry Pi</span>
+            </span>
+          </div>
+          <a class="project-row-link" href="https://github.com/PJMoller/SmartDispenser" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
+        </div>
+
+        <div class="project-row" tabindex="0" role="button" aria-haspopup="dialog" data-title="Fishsee"
           data-detail="Built with a friend for an Arduino Uno R4. Reads temperature, pH, turbidity, and flow sensors, drives a pump and servos, and controls an addressable LED strip. Uses a Raspberry Pi over a serial connection to handle heavier data requests so the Arduino doesn't run out of memory.">
-          <div class="project-card-top">
-            <div class="project-tags">
-              <span class="project-tag">C++</span>
-              <span class="project-tag">Arduino</span>
-            </div>
+          <div class="project-row-main">
+            <span class="project-row-name">Fishsee</span>
+            <span class="project-row-tags">
+              <span class="project-row-tag">C++</span>
+              <span class="project-row-tag">Arduino</span>
+            </span>
           </div>
-          <h3>Fishsee</h3>
-          <p>An aquarium monitor built with a friend. Tracks temperature, pH, turbidity, and flow, and manages a pump and an LED strip.</p>
-          <span class="project-more">tap for the story →</span>
-          <a class="project-link" href="https://github.com/Fishsee/Arduino" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
-        </article>
+          <a class="project-row-link" href="https://github.com/Fishsee/Arduino" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
+        </div>
 
-        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+        <div class="project-row" tabindex="0" role="button" aria-haspopup="dialog" data-title="frogpet"
           data-detail="A desktop pet built with Python and Tkinter. A little frog walks around your screen, notices which application is focused, and reacts with speech-bubble commentary generated by a local LLM through Ollama. Mostly an excuse to mess with window tracking and prompt design.">
-          <div class="project-card-top">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">local LLM</span>
-            </div>
+          <div class="project-row-main">
+            <span class="project-row-name">frogpet</span>
+            <span class="project-row-tags">
+              <span class="project-row-tag">Python</span>
+              <span class="project-row-tag">local LLM</span>
+            </span>
           </div>
-          <h3>frogpet</h3>
-          <p>A tiny frog that lives on your desktop, notices which app you're using, and comments on it with a local LLM.</p>
-          <span class="project-more">tap for the story →</span>
-          <a class="project-link" href="https://github.com/PJMoller/frogpet" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
-        </article>
+          <a class="project-row-link" href="https://github.com/PJMoller/frogpet" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
+        </div>
 
       </div>
     </section>

@@ -51,7 +51,8 @@ let lastFocused = null;
 
 function openModal(card) {
   lastFocused = document.activeElement;
-  modalTitle.textContent = card.querySelector('h3').textContent;
+  const titleEl = card.querySelector('h3');
+  modalTitle.textContent = card.dataset.title || (titleEl ? titleEl.textContent : '');
   modalBody.textContent = card.dataset.detail;
   overlay.classList.add('open');
   modalClose.focus();
@@ -62,7 +63,7 @@ function closeModal() {
   if (lastFocused) lastFocused.focus();
 }
 
-document.querySelectorAll('.project-card').forEach(card => {
+document.querySelectorAll('.project-card, .project-row').forEach(card => {
   card.addEventListener('click', () => openModal(card));
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
