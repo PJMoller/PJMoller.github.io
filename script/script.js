@@ -163,14 +163,6 @@ async function renderProjects() {
 
 renderProjects();
 
-modalClose.addEventListener('click', closeModal);
-overlay.addEventListener('click', (e) => {
-  if (e.target === overlay) closeModal();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
-});
-
 // ---- Email button ----
 // This is a real `<a href="mailto:...">` so the browser handles opening
 // the mail client itself, synchronously, as part of the click, no JS in

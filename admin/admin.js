@@ -15,7 +15,7 @@ const readmeCache = new Map(); // project id -> readme text, never saved to proj
 
 const lockPanel = document.getElementById('lock-panel');
 const adminContent = document.getElementById('admin-content');
-const lockBtn = document.getElementById('lock-btn');
+const lockBtn = document.getElementById('lock-btn'); // inside #admin-content, so it hides/shows with it
 const gateInput = document.getElementById('gate-password-input');
 const gateBtn = document.getElementById('gate-unlock-btn');
 const gateStatus = document.getElementById('gate-status');
@@ -52,13 +52,11 @@ function clearSession() {
 function showUnlocked() {
   lockPanel.hidden = true;
   adminContent.hidden = false;
-  lockBtn.hidden = false;
 }
 function showLocked() {
   clearSession();
   lockPanel.hidden = false;
   adminContent.hidden = true;
-  lockBtn.hidden = true;
   gateInput.value = '';
   importPanel.hidden = true;
   projectsPanel.hidden = true;

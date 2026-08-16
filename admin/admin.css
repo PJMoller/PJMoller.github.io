@@ -226,9 +226,8 @@
 }
 
 .admin-project-body {
-  padding: 4px 16px 18px;
+  padding: 16px 16px 18px;
   border-top: 1px solid var(--border);
-  padding-top: 16px;
   margin-top: -1px;
 }
 

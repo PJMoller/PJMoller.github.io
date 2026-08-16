@@ -1,10 +1,10 @@
 // pjmoller-admin Cloudflare Worker
 //
-// This is the actual security boundary for the admin panel. Your admin
-// password and your GitHub token both live here as Worker secrets, set
-// with `wrangler secret put`, never shipped to the browser, never
-// visible in any page source. The admin page at pjmoller.github.io/admin
-// talks to this Worker instead of talking to GitHub directly.
+// Security boundary for the admin panel. The admin password and the
+// GitHub token live here as Worker secrets, set with `wrangler secret
+// put`, never shipped to the browser and never visible in any page
+// source. The admin page at pjmoller.github.io/admin talks to this
+// Worker instead of talking to GitHub directly.
 //
 // Endpoints:
 //   POST /login              { password } -> { token }  (12h session)
