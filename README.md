@@ -1,26 +1,24 @@
 # pjmoller.github.io
 
-Source for my personal portfolio site, a terminal-themed single page built with
-plain HTML, CSS and JS (no framework, no build step). It's served straight from
-GitHub Pages.
+Personal portfolio site. Terminal-themed, single page, plain HTML/CSS/JS, no
+framework and no build step. Hosted for free on GitHub Pages.
 
-**Live site:** https://pjmoller.github.io
+Live at https://pjmoller.github.io
 
-## Structure
+## What's in here
 
 ```
-index.html        the site itself (hero, work, about, play, contact)
-css/style.css      all styling
-script/script.js   renders projects from projects.json, scroll effects, etc.
-projects.json      project data (see below), edited through /admin instead of by hand
-admin/             password-protected panel for managing projects.json
-worker/            source for the Cloudflare Worker the admin panel talks to
+index.html        the actual site (hero, work, about, play, contact)
+css/style.css      all the styling
+script/script.js   pulls projects.json in and renders it, plus scroll effects etc.
+projects.json      the project data, edited through /admin instead of by hand
+admin/             a little password-locked panel for managing projects.json
+worker/            the Cloudflare Worker the admin panel talks to
 ```
 
-## Projects data
+## The project data
 
-`projects.json` is the single source of truth for the "work" section. Each
-entry looks like:
+`projects.json` drives the whole "work" section. Each project is just:
 
 ```json
 {
@@ -35,55 +33,47 @@ entry looks like:
 }
 ```
 
-`script.js` fetches this file and renders `featured: true` projects as cards in
-the grid, everything else as compact rows further down. `order` controls
-ranking within each group.
+`script.js` reads this and puts anything with `featured: true` up top as a
+card, everything else goes into the compact list further down. `order`
+controls the ranking within each group.
 
-## Admin panel
+## The admin panel
 
-`/admin` is a small CMS so I can add, edit, reorder and import projects
-without touching code or committing JSON by hand. It's password protected and
-talks to a Cloudflare Worker (`worker/worker.js`, deployed separately, not
-part of this static site) instead of GitHub directly, so the admin password
-and the GitHub token used to commit changes never live in this repo or in any
-browser-shipped JS. `admin/admin.js` only ever sees a short-lived session
-token after logging in.
+`/admin` adds, edits, reorders and imports projects without touching code or
+hand-editing JSON. It's password protected, and it talks to a Cloudflare
+Worker instead of GitHub directly, so the password and the GitHub token used
+to commit changes never sit in this repo or get shipped to the browser. The
+admin page itself only ever holds a short-lived session token once logged
+in.
 
-What it can do:
-- **Import from GitHub** — paste a repo URL, it pulls the name, primary
-  language and README through the Worker.
-- **Copy prompt for Claude** — builds a prompt from the imported README so I
-  can paste it into a Claude chat and get a blurb/story written in my voice,
-  then paste that back in. Nothing is generated automatically inside the
-  panel itself.
-- **Reorder / feature / delete** projects, edit tags, blurb, story and repo
-  links.
-- **Save to GitHub** — commits the updated `projects.json` straight to `main`
-  through the Worker's GitHub token. GitHub Pages picks it up within a
-  minute or so.
+A few things it does:
 
-### Worker
+- paste a GitHub repo link and it pulls the name, language and README
+  through the Worker
+- a "copy prompt" button builds a prompt from that README, meant to draft
+  the blurb and story elsewhere, then paste back in
+- reorder, feature, or delete projects, edit tags/blurb/story/repo links
+- hitting save commits the updated `projects.json` straight to `main`.
+  GitHub Pages usually picks it up within a minute
 
-The Worker (`worker/worker.js`) is the actual security boundary:
+### the Worker
 
-- `POST /login` checks the password and hands back a 12h HMAC-signed session
-  token.
-- `GET /projects` / `PUT /projects` read and write `projects.json` via
-  GitHub's Contents API, authenticated with a fine-grained PAT scoped to just
-  this repo's contents.
-- `GET /import` proxies a repo's metadata and README from GitHub.
+`worker/worker.js` checks the password, hands back a signed session token
+good for 12 hours, and proxies reads/writes of `projects.json` plus repo
+lookups through a GitHub token scoped to just this repo. None of
+`ADMIN_PASSWORD`, `GITHUB_TOKEN` or `SESSION_SECRET` are committed anywhere,
+they're set as Worker secrets on Cloudflare. The copy of `worker.js` in this
+repo is here for version history, the one actually running is deployed
+separately.
 
-All of `ADMIN_PASSWORD`, `GITHUB_TOKEN` and `SESSION_SECRET` are set as
-Worker secrets on Cloudflare, not committed anywhere. `worker.js` in this repo
-is kept for version control only, the deployed copy is what's actually live.
+## running it locally
 
-## Local dev
-
-It's static files, so any local server works:
+It's static files, so anything works, e.g.
 
 ```
 python3 -m http.server 8000
 ```
 
-The admin panel needs `WORKER_URL` in `admin/admin.js` pointed at a deployed
-Worker to do anything beyond show the lock screen.
+The admin panel won't do much locally unless `WORKER_URL` in
+`admin/admin.js` points at an actual deployed Worker, otherwise it's just
+the lock screen.
