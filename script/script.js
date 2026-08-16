@@ -4,6 +4,18 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 // never depends on a JS timer, the real text is in the HTML from the
 // start and CSS just reveals it.
 
+// ---- In-page nav links: scroll to the section without writing a #hash
+// into the URL bar (so the address bar stays clean on every click). ----
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const id = link.getAttribute('href').slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+  });
+});
+
 // ---- Reveal sections on scroll ----
 const sections = document.querySelectorAll('.section');
 const sectionObserver = new IntersectionObserver((entries) => {
