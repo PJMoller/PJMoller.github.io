@@ -12,56 +12,59 @@
 </head>
 <body class="admin-body">
 
-  <div class="admin-wrap">
+  <section class="lock-screen" id="lock-panel">
+    <div class="lock-card">
+      <a href="../" class="lock-logo">PM</a>
 
-    <header class="admin-header">
-      <a href="../" class="nav-logo">PM</a>
-      <h1 class="admin-title"><span class="prompt-mark">$</span> admin ./projects</h1>
-      <button id="lock-btn" class="admin-icon-btn admin-lock-btn" type="button" hidden>lock</button>
-    </header>
+      <svg class="lock-icon" width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="4" y="11" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M7.5 11V7.5a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="12" cy="16" r="1.4" fill="currentColor"/>
+      </svg>
 
-    <section class="admin-panel" id="lock-panel">
-      <h2 class="admin-panel-heading">connect</h2>
-      <p class="admin-hint">
-        Your password and GitHub token both live server-side in a Cloudflare Worker now,
-        never in this page. This just asks the Worker to check the password and hand back
-        a session.
+      <h1 class="lock-title">you probably shouldn't be here</h1>
+      <p class="lock-copy">
+        This is the back office for my portfolio, just me swapping project text around
+        and pretending it's a real CMS. There's nothing to see here unless you're me,
+        so unless you've got the password, you'd have better luck on the actual site.
       </p>
-      <div class="admin-row">
+
+      <div class="lock-form">
         <input type="password" id="gate-password-input" class="admin-input" placeholder="password" autocomplete="off">
         <button id="gate-unlock-btn" class="hero-cta" type="button">unlock</button>
       </div>
       <p class="admin-status" id="gate-status"></p>
+
+      <a href="../" class="lock-back">&larr; take me back to the actual site</a>
+    </div>
+  </section>
+
+  <div class="admin-wrap" id="admin-content" hidden>
+
+    <header class="admin-header">
+      <a href="../" class="nav-logo">PM</a>
+      <h1 class="admin-title"><span class="prompt-mark">$</span> admin ./projects</h1>
+      <button id="lock-btn" class="admin-icon-btn admin-lock-btn" type="button">lock</button>
+    </header>
+
+    <section class="admin-panel admin-panel-compact" id="import-panel" hidden>
+      <h2 class="admin-panel-heading">import from github <span class="admin-panel-sub">paste a repo link, it'll pull the name, language and README</span></h2>
+      <div class="admin-row">
+        <input type="text" id="import-url" placeholder="https://github.com/owner/repo" class="admin-input">
+        <button id="import-btn" class="hero-cta" type="button">import</button>
+      </div>
+      <p class="admin-status" id="import-status"></p>
     </section>
 
-    <div id="admin-content" hidden>
+    <section class="admin-panel" id="projects-panel" hidden>
+      <h2 class="admin-panel-heading">projects <span class="admin-panel-sub">top = featured, click a row to edit it</span></h2>
+      <div id="projects-editor" class="admin-projects"></div>
+      <button id="add-project-btn" class="contact-btn contact-btn-ghost" type="button">+ add project manually</button>
+    </section>
 
-      <section class="admin-panel" id="import-panel" hidden>
-        <h2 class="admin-panel-heading">import from github</h2>
-        <p class="admin-hint">
-          Paste a repo URL to pull in its name, primary language, and README. Each
-          imported project gets a "copy prompt for claude" button, click it, paste the
-          prompt into a Claude chat, and paste the blurb/story it writes back into the
-          fields below, the same way I've been writing these throughout this project.
-        </p>
-        <div class="admin-row">
-          <input type="text" id="import-url" placeholder="https://github.com/owner/repo" class="admin-input">
-          <button id="import-btn" class="hero-cta" type="button">import</button>
-        </div>
-        <p class="admin-status" id="import-status"></p>
-      </section>
-
-      <section class="admin-panel" id="projects-panel" hidden>
-        <h2 class="admin-panel-heading">projects <span class="admin-panel-sub">(top of the list = featured order, toggle "featured" to move between the grid and the compact list)</span></h2>
-        <div id="projects-editor" class="admin-projects"></div>
-        <button id="add-project-btn" class="contact-btn contact-btn-ghost" type="button">+ add project manually</button>
-      </section>
-
-      <div class="admin-save-bar" id="save-bar" hidden>
-        <button id="save-btn" class="hero-cta" type="button">save to github</button>
-        <span class="admin-status" id="save-status"></span>
-      </div>
-
+    <div class="admin-save-bar" id="save-bar" hidden>
+      <button id="save-btn" class="hero-cta" type="button">save to github</button>
+      <span class="admin-status" id="save-status"></span>
     </div>
 
   </div>

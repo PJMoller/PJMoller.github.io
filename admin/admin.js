@@ -120,7 +120,9 @@ async function loadProjects() {
 
 async function saveProjects() {
   projects.forEach((p, i) => { p.order = i + 1; });
-  const jsonStr = JSON.stringify(projects, null, 2) + '\n';
+  // strip internal-only UI state (e.g. which entries are expanded) before saving
+  const clean = projects.map(({ _open, ...rest }) => rest);
+  const jsonStr = JSON.stringify(clean, null, 2) + '\n';
   const data = await workerFetch('/projects', {
     method: 'PUT',
     body: JSON.stringify({ content: utf8ToBase64(jsonStr), sha: fileSha }),
@@ -225,6 +227,7 @@ importBtn.addEventListener('click', async () => {
       repos: [{ label: 'repo', url: info.html_url }],
       featured: false,
       order: projects.length + 1,
+      _open: true,
     };
     if (readme) readmeCache.set(id, readme);
     projects.push(project);
@@ -252,6 +255,7 @@ addProjectBtn.addEventListener('click', () => {
     repos: [],
     featured: false,
     order: projects.length + 1,
+    _open: true,
   });
   renderEditor();
   const block = editorEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
@@ -267,29 +271,104 @@ function renderEditor() {
 }
 
 function buildProjectBlock(project, index) {
-  const block = document.createElement('div');
+  const block = document.createElement('details');
   block.className = 'admin-project';
   block.dataset.id = project.id;
+  if (project._open) block.open = true;
+  block.addEventListener('toggle', () => { project._open = block.open; });
 
-  const head = document.createElement('div');
-  head.className = 'admin-project-head';
+  // ---- collapsed summary row ----
+  const summary = document.createElement('summary');
+  summary.className = 'admin-project-summary';
+
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'admin-project-name';
+  nameSpan.textContent = project.title || 'untitled project';
+  summary.appendChild(nameSpan);
+
+  const badge = document.createElement('span');
+  badge.className = 'admin-badge';
+  badge.textContent = 'featured';
+  badge.hidden = !project.featured;
+  summary.appendChild(badge);
+
+  const controls = document.createElement('span');
+  controls.className = 'admin-project-controls';
+
+  const upBtn = document.createElement('button');
+  upBtn.type = 'button';
+  upBtn.className = 'admin-icon-btn';
+  upBtn.title = 'move up';
+  upBtn.textContent = '↑';
+  upBtn.disabled = index === 0;
+  upBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    [projects[index - 1], projects[index]] = [projects[index], projects[index - 1]];
+    renderEditor();
+  });
+  controls.appendChild(upBtn);
+
+  const downBtn = document.createElement('button');
+  downBtn.type = 'button';
+  downBtn.className = 'admin-icon-btn';
+  downBtn.title = 'move down';
+  downBtn.textContent = '↓';
+  downBtn.disabled = index === projects.length - 1;
+  downBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    [projects[index + 1], projects[index]] = [projects[index], projects[index + 1]];
+    renderEditor();
+  });
+  controls.appendChild(downBtn);
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.type = 'button';
+  deleteBtn.className = 'admin-icon-btn danger';
+  deleteBtn.title = 'delete';
+  deleteBtn.textContent = '×';
+  deleteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!confirm(`Delete "${project.title}"? This only takes effect once you hit "save to github".`)) return;
+    projects.splice(index, 1);
+    renderEditor();
+  });
+  controls.appendChild(deleteBtn);
+
+  summary.appendChild(controls);
+  block.appendChild(summary);
+
+  // ---- expanded body ----
+  const body = document.createElement('div');
+  body.className = 'admin-project-body';
+
+  const metaRow = document.createElement('div');
+  metaRow.className = 'admin-row admin-project-meta';
 
   const titleInput = document.createElement('input');
   titleInput.className = 'admin-input';
   titleInput.value = project.title;
   titleInput.placeholder = 'project title';
-  titleInput.addEventListener('input', () => { project.title = titleInput.value; });
-  head.appendChild(titleInput);
+  titleInput.addEventListener('input', () => {
+    project.title = titleInput.value;
+    nameSpan.textContent = titleInput.value || 'untitled project';
+  });
+  metaRow.appendChild(titleInput);
 
   const featuredLabel = document.createElement('label');
   featuredLabel.className = 'admin-featured-toggle';
   const featuredCheckbox = document.createElement('input');
   featuredCheckbox.type = 'checkbox';
   featuredCheckbox.checked = !!project.featured;
-  featuredCheckbox.addEventListener('change', () => { project.featured = featuredCheckbox.checked; });
+  featuredCheckbox.addEventListener('change', () => {
+    project.featured = featuredCheckbox.checked;
+    badge.hidden = !project.featured;
+  });
   featuredLabel.appendChild(featuredCheckbox);
   featuredLabel.appendChild(document.createTextNode('featured'));
-  head.appendChild(featuredLabel);
+  metaRow.appendChild(featuredLabel);
 
   const promptBtn = document.createElement('button');
   promptBtn.type = 'button';
@@ -306,91 +385,61 @@ function buildProjectBlock(project, index) {
     }
     setTimeout(() => { promptBtn.textContent = 'copy prompt for claude'; }, 1600);
   });
-  head.appendChild(promptBtn);
+  metaRow.appendChild(promptBtn);
 
-  const upBtn = document.createElement('button');
-  upBtn.type = 'button';
-  upBtn.className = 'admin-icon-btn';
-  upBtn.textContent = '↑ up';
-  upBtn.disabled = index === 0;
-  upBtn.addEventListener('click', () => {
-    [projects[index - 1], projects[index]] = [projects[index], projects[index - 1]];
-    renderEditor();
-  });
-  head.appendChild(upBtn);
-
-  const downBtn = document.createElement('button');
-  downBtn.type = 'button';
-  downBtn.className = 'admin-icon-btn';
-  downBtn.textContent = '↓ down';
-  downBtn.disabled = index === projects.length - 1;
-  downBtn.addEventListener('click', () => {
-    [projects[index + 1], projects[index]] = [projects[index], projects[index + 1]];
-    renderEditor();
-  });
-  head.appendChild(downBtn);
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.type = 'button';
-  deleteBtn.className = 'admin-icon-btn danger';
-  deleteBtn.textContent = 'delete';
-  deleteBtn.addEventListener('click', () => {
-    if (!confirm(`Delete "${project.title}"? This only takes effect once you hit "save to github".`)) return;
-    projects.splice(index, 1);
-    renderEditor();
-  });
-  head.appendChild(deleteBtn);
-
-  block.appendChild(head);
+  body.appendChild(metaRow);
 
   // ---- tags ----
   const tagsField = document.createElement('div');
   tagsField.className = 'admin-field';
   const tagsLabel = document.createElement('label');
-  tagsLabel.textContent = 'tags (comma separated)';
+  tagsLabel.textContent = 'tags';
   tagsField.appendChild(tagsLabel);
   const tagsInput = document.createElement('input');
   tagsInput.className = 'admin-input';
+  tagsInput.placeholder = 'comma separated, e.g. Python, Flask';
   tagsInput.value = project.tags.join(', ');
   tagsInput.addEventListener('input', () => {
     project.tags = tagsInput.value.split(',').map((t) => t.trim()).filter(Boolean);
   });
   tagsField.appendChild(tagsInput);
-  block.appendChild(tagsField);
+  body.appendChild(tagsField);
 
   // ---- blurb ----
   const blurbField = document.createElement('div');
   blurbField.className = 'admin-field';
   const blurbLabel = document.createElement('label');
-  blurbLabel.textContent = 'blurb (shown on the card/row)';
+  blurbLabel.textContent = 'blurb';
   blurbField.appendChild(blurbLabel);
   const blurbInput = document.createElement('textarea');
   blurbInput.className = 'admin-textarea';
   blurbInput.rows = 2;
+  blurbInput.placeholder = 'shown on the project card';
   blurbInput.value = project.blurb;
   blurbInput.addEventListener('input', () => { project.blurb = blurbInput.value; });
   blurbField.appendChild(blurbInput);
-  block.appendChild(blurbField);
+  body.appendChild(blurbField);
 
   // ---- detail ----
   const detailField = document.createElement('div');
   detailField.className = 'admin-field';
   const detailLabel = document.createElement('label');
-  detailLabel.textContent = 'story (shown in the tap-for-more modal)';
+  detailLabel.textContent = 'story';
   detailField.appendChild(detailLabel);
   const detailInput = document.createElement('textarea');
   detailInput.className = 'admin-textarea';
   detailInput.rows = 4;
+  detailInput.placeholder = 'shown in the tap-for-more popup';
   detailInput.value = project.detail;
   detailInput.addEventListener('input', () => { project.detail = detailInput.value; });
   detailField.appendChild(detailInput);
-  block.appendChild(detailField);
+  body.appendChild(detailField);
 
   // ---- repos ----
   const reposField = document.createElement('div');
   reposField.className = 'admin-field';
   const reposLabel = document.createElement('label');
-  reposLabel.textContent = 'repo links (label + url, leave empty for none)';
+  reposLabel.textContent = 'repos';
   reposField.appendChild(reposLabel);
 
   const reposList = document.createElement('div');
@@ -403,14 +452,15 @@ function buildProjectBlock(project, index) {
   const addRepoBtn = document.createElement('button');
   addRepoBtn.type = 'button';
   addRepoBtn.className = 'admin-icon-btn';
-  addRepoBtn.textContent = '+ add repo link';
+  addRepoBtn.textContent = '+ repo';
   addRepoBtn.addEventListener('click', () => {
     project.repos.push({ label: 'repo', url: '' });
     reposList.appendChild(buildRepoRow(project, project.repos[project.repos.length - 1], project.repos.length - 1));
   });
   reposField.appendChild(addRepoBtn);
 
-  block.appendChild(reposField);
+  body.appendChild(reposField);
+  block.appendChild(body);
 
   return block;
 }
