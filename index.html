@@ -15,10 +15,11 @@
   <canvas id="circuit-bg" aria-hidden="true"></canvas>
 
   <nav class="nav">
-    <a href="#top" class="nav-logo">PM<span class="nav-cursor">_</span></a>
+    <a href="#top" class="nav-logo">PM</a>
     <div class="nav-links">
       <a href="#work">work</a>
       <a href="#about">about</a>
+      <a href="#play">play</a>
       <a href="#contact">contact</a>
     </div>
   </nav>
@@ -33,10 +34,10 @@
       </div>
       <div class="terminal-body">
         <p class="term-line"><span class="prompt">$</span> whoami</p>
-        <h1 class="hero-name type-css">Peter Möller</h1>
+        <h1 class="hero-name">Peter Möller</h1>
         <p class="term-line term-line-2"><span class="prompt">$</span> cat about.txt</p>
         <p class="hero-tagline type-css-tagline">I like building things that bridge software and hardware.</p>
-        <p class="hero-sub">Computer Science student · robot builder · hardware tinkerer</p>
+        <p class="hero-sub">Computer Science student at NHL Stenden, Netherlands.</p>
         <a href="#work" class="hero-cta">see what I've built <span aria-hidden="true">↓</span></a>
       </div>
     </div>
@@ -50,33 +51,56 @@
       <div class="project-grid">
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="Built for a head-to-head robotics competition — two Arduino-controlled bots race a circuit, first to finish wins. Involved motor control, line-following sensors, and a lot of debugging under deadline pressure.">
+          data-detail="Team project for a robotics competition: Arduino-controlled bots racing each other around a circuit, first to finish wins. I worked on motor control and the line-following sensors. Lots of debugging under deadline pressure, but we came out on top.">
           <div class="project-card-top">
             <span class="project-tag">🏆 winner</span>
           </div>
           <h3>Battlebot</h3>
-          <p>An Arduino-controlled racer built to beat other teams' bots around a circuit. It won.</p>
+          <p>Built with a couple of teammates for a head-to-head robotics competition. We won.</p>
           <span class="project-more">tap for the story →</span>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="A Raspberry Pi–driven dispenser that pumps an exact number of milliliters of liquid using a peristaltic pump, with a weight sensor closing the feedback loop for accuracy.">
+          data-detail="A group project with Sven and Lennon: a Raspberry Pi–driven dispenser that pumps an exact number of milliliters of liquid using a peristaltic pump, with a weight sensor closing the feedback loop for accuracy.">
           <div class="project-card-top">
             <span class="project-tag">raspberry pi</span>
           </div>
           <h3>Smart Liquid Dispenser</h3>
-          <p>Pumps a precise volume of liquid using sensor feedback instead of guesswork.</p>
+          <p>Built with two teammates — pumps a precise amount of liquid using sensor feedback instead of guesswork.</p>
           <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/PJMoller/SmartDispenser" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
 
         <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
-          data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays a move against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and getting comfortable with Linux along the way.">
+          data-detail="A robot that watches a chessboard through a camera, works out the position with machine vision, and plays a move against a human opponent. Involved bridging Python and C, a lot of 3D-printed parts, and learning Linux along the way.">
           <div class="project-card-top">
             <span class="project-tag">machine vision</span>
           </div>
           <h3>Chess Robot</h3>
           <p>Sees the board, works out the position, and plays a move — using machine vision.</p>
           <span class="project-more">tap for the story →</span>
+        </article>
+
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="Built with a team for a zoo (Wildlands): a Flask dashboard that predicts daily visitor numbers using LightGBM models trained on weather, event, and historical visitor data. Includes a login system, a 365-day forecast, and sliders for testing different scenarios. Deployed with Docker.">
+          <div class="project-card-top">
+            <span class="project-tag">machine learning</span>
+          </div>
+          <h3>Procyon</h3>
+          <p>A visitor-prediction dashboard for a zoo, built with a small team, using weather and event data to forecast how busy the park will be.</p>
+          <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/PJMoller/Wildlands_Procyon" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
+        </article>
+
+        <article class="project-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-detail="A desktop pet built with Python and Tkinter: a little frog walks around your screen, notices which application is focused, and reacts with speech-bubble commentary generated by a local LLM (via Ollama). Mostly an excuse to mess with window tracking and prompt design.">
+          <div class="project-card-top">
+            <span class="project-tag">just for fun</span>
+          </div>
+          <h3>frogpet</h3>
+          <p>A tiny frog that lives on your desktop and comments on whatever app you're using, powered by a local LLM.</p>
+          <span class="project-more">tap for the story →</span>
+          <a class="project-link" href="https://github.com/PJMoller/frogpet" target="_blank" rel="noopener" onclick="event.stopPropagation()">repo ↗</a>
         </article>
 
       </div>
@@ -86,9 +110,9 @@
       <h2 class="section-heading"><span class="prompt-mark">$</span> cat me.md</h2>
       <div class="about-grid">
         <div class="about-text">
-          <p>I'm a second-year Computer Science student at NHL Stenden (the program is officially called "Technische Informatica" — closest translation is Computer Science / Computer Engineering), and most of what I enjoy building lives in the gap between software and hardware — the part where code stops being abstract and starts turning motors, pumping liquid, or looking at a chessboard through a camera.</p>
-          <p>Along the way I've picked up Python, C, C++, Java, SQL, R and HTML, plus a working sense of how to run a project without it falling apart — some SCRUM, some Agile, some just keeping a to-do list that actually gets followed.</p>
-          <p>Before this I trained as an IT systems and devices technician at Alfa-college, and picked up two internships — at Multicast in Emmen and Kantor in Appingedam — that gave me a first real look at how this stuff works outside a classroom.</p>
+          <p>I'm a second-year Computer Science student at NHL Stenden — technically the program is called "Technische Informatica", which doesn't translate directly, but it's closest to Computer Science or Computer Engineering. Most of what I like building sits between software and hardware: the point where code stops being abstract and starts turning a motor, pumping liquid, or reading a chessboard through a camera.</p>
+          <p>Along the way I've picked up Python, C, C++, Java, SQL, R and HTML, plus a decent sense of how to keep a project from falling apart — some SCRUM, some Agile, mostly just keeping a to-do list I actually follow.</p>
+          <p>Before NHL Stenden I trained as an IT systems and devices technician at Alfa-college, where I also did two internships — at Multicast in Emmen and Kantor in Appingedam — as part of the program. That was my first real look at how this stuff works outside a classroom.</p>
         </div>
         <div class="about-skills">
           <span class="skill-pill">Python</span>
@@ -113,26 +137,40 @@
           </div>
         </div>
         <div class="timeline-item">
-          <span class="timeline-year">2023</span>
-          <div>
-            <h4>Internship — Kantor</h4>
-            <p>Appingedam · Feb – Jun 2023</p>
-          </div>
-        </div>
-        <div class="timeline-item">
           <span class="timeline-year">2020 – 2023</span>
           <div>
             <h4>Expert IT Systems and Devices</h4>
             <p>Alfa-college Groningen</p>
+            <div class="timeline-children">
+              <div class="timeline-subitem">
+                <span class="sub-marker" aria-hidden="true">↳</span>
+                <span>Internship at Multicast, Emmen · Sep 2021 – Feb 2022</span>
+              </div>
+              <div class="timeline-subitem">
+                <span class="sub-marker" aria-hidden="true">↳</span>
+                <span>Internship at Kantor, Appingedam · Feb – Jun 2023</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="timeline-item">
-          <span class="timeline-year">2021 – 2022</span>
-          <div>
-            <h4>Internship — Multicast</h4>
-            <p>Emmen · Sep 2021 – Feb 2022</p>
-          </div>
+      </div>
+    </section>
+
+    <section id="play" class="section play-section">
+      <h2 class="section-heading"><span class="prompt-mark">$</span> ./tiny_game</h2>
+      <p class="play-intro">A small distraction. Dodge the bugs — they only get faster.</p>
+
+      <div class="game-wrap">
+        <canvas id="game-canvas" width="600" height="320" aria-label="Debug Dash game"></canvas>
+        <div class="game-overlay" id="game-overlay">
+          <p class="game-overlay-title" id="game-overlay-title">Debug Dash</p>
+          <p class="game-overlay-sub" id="game-overlay-sub">Arrow keys or A/D to move. Don't touch the bugs.</p>
+          <button type="button" class="hero-cta game-btn" id="game-btn">start</button>
         </div>
+      </div>
+      <div class="game-controls" aria-hidden="true">
+        <button type="button" class="game-ctrl" id="game-left">←</button>
+        <button type="button" class="game-ctrl" id="game-right">→</button>
       </div>
     </section>
 
@@ -140,9 +178,9 @@
       <h2 class="section-heading"><span class="prompt-mark">$</span> mail --send</h2>
       <p class="contact-text">Got a robot that needs building, a project that needs a hand, or just want to talk shop? I'm around.</p>
       <div class="contact-links">
-        <button type="button" class="contact-btn" id="email-btn" data-email="peetmoller92@gmail.com">
+        <a class="contact-btn" id="email-btn" href="mailto:peetmoller92@gmail.com" data-email="peetmoller92@gmail.com">
           <span id="email-btn-label">peetmoller92@gmail.com</span>
-        </button>
+        </a>
         <a href="https://github.com/PJMoller" target="_blank" rel="noopener" class="contact-btn contact-btn-ghost">GitHub ↗</a>
       </div>
       <p class="contact-hint" id="email-hint" aria-live="polite"></p>
