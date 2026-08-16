@@ -9,9 +9,24 @@ const REPO = 'PJMoller.github.io';
 const FILE_PATH = 'projects.json';
 const BRANCH = 'main';
 const TOKEN_KEY = 'pjmoller_admin_token';
+const GATE_KEY = 'pjmoller_admin_gate_ok';
+
+// SHA-256 hex digest of the admin password. Only the hash lives in this
+// file (which is public, since GitHub Pages serves everything in this
+// repo), never the password itself, that only exists in your head.
+// Not set yet, everyone stays locked out until this is filled in.
+const GATE_HASH = '';
 
 let projects = [];
 let fileSha = null;
+const readmeCache = new Map(); // project id -> readme text, never saved to projects.json
+
+const lockPanel = document.getElementById('lock-panel');
+const adminContent = document.getElementById('admin-content');
+const lockBtn = document.getElementById('lock-btn');
+const gateInput = document.getElementById('gate-password-input');
+const gateBtn = document.getElementById('gate-unlock-btn');
+const gateStatus = document.getElementById('gate-status');
 
 const tokenInput = document.getElementById('token-input');
 const loadBtn = document.getElementById('load-btn');
@@ -30,6 +45,50 @@ const addProjectBtn = document.getElementById('add-project-btn');
 const saveBar = document.getElementById('save-bar');
 const saveBtn = document.getElementById('save-btn');
 const saveStatus = document.getElementById('save-status');
+
+// ---- password gate (deterrent only, see note in the HTML) ----
+async function sha256Hex(text) {
+  const bytes = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function showUnlocked() {
+  lockPanel.hidden = true;
+  adminContent.hidden = false;
+  lockBtn.hidden = false;
+}
+function showLocked() {
+  lockPanel.hidden = false;
+  adminContent.hidden = true;
+  lockBtn.hidden = true;
+  gateInput.value = '';
+}
+
+if (GATE_HASH && localStorage.getItem(GATE_KEY) === GATE_HASH) {
+  showUnlocked();
+}
+
+gateBtn.addEventListener('click', async () => {
+  if (!GATE_HASH) {
+    setStatus(gateStatus, 'no password has been configured yet.', 'err');
+    return;
+  }
+  const hash = await sha256Hex(gateInput.value);
+  if (hash === GATE_HASH) {
+    localStorage.setItem(GATE_KEY, GATE_HASH);
+    showUnlocked();
+  } else {
+    setStatus(gateStatus, 'wrong password.', 'err');
+  }
+});
+gateInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') gateBtn.click();
+});
+lockBtn.addEventListener('click', () => {
+  localStorage.removeItem(GATE_KEY);
+  showLocked();
+});
 
 // ---- token storage ----
 function getToken() {
@@ -96,6 +155,43 @@ async function ghRepoInfo(owner, repo) {
   return res.json();
 }
 
+// best-effort README fetch, used only to build the "copy prompt for
+// claude" text, never saved to projects.json.
+async function ghReadme(owner, repo) {
+  const token = getToken();
+  const headers = { Accept: 'application/vnd.github.raw+json' };
+  if (token) headers.Authorization = 'token ' + token;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme`, { headers });
+    if (!res.ok) return '';
+    return await res.text();
+  } catch {
+    return '';
+  }
+}
+
+function buildClaudePrompt(project, readme) {
+  const repoUrl = project.repos[0]?.url || '(no repo link yet)';
+  const trimmedReadme = readme ? readme.slice(0, 3000) : '(no README found, just work from the repo name and tags)';
+  return `I'm adding a project to my portfolio site (pjmoller.github.io). Here's the repo:
+
+Repo: ${repoUrl}
+Name: ${project.title}
+Tags so far: ${project.tags.join(', ') || '(none yet)'}
+README:
+"""
+${trimmedReadme}
+"""
+
+Write two things for me, in my usual voice: plain, casual, first person where it fits, no em dashes.
+1. blurb: 1-2 sentences for a project card.
+2. story: 3-5 sentences for a "tap for the story" popup, explaining what it does and anything interesting about how it was built.
+
+Reply with just:
+blurb: ...
+story: ...`;
+}
+
 // ---- helpers ----
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'project';
@@ -155,6 +251,7 @@ importBtn.addEventListener('click', async () => {
   setStatus(importStatus, `fetching ${owner}/${repo}…`);
   try {
     const info = await ghRepoInfo(owner, repo);
+    const readme = await ghReadme(owner, repo);
     const title = info.name;
     const id = uniqueId(slugify(title));
     const project = {
@@ -167,9 +264,12 @@ importBtn.addEventListener('click', async () => {
       featured: false,
       order: projects.length + 1
     };
+    if (readme) readmeCache.set(id, readme);
     projects.push(project);
     renderEditor();
-    setStatus(importStatus, `imported "${title}", fill in the blurb and story below.`, 'ok');
+    setStatus(importStatus, readme
+      ? `imported "${title}" with its README. Use "copy prompt for claude" on it below to draft the blurb and story.`
+      : `imported "${title}" (no README found), fill in the blurb and story below.`, 'ok');
     importUrl.value = '';
     const block = editorEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
     if (block) block.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -229,6 +329,23 @@ function buildProjectBlock(project, index) {
   featuredLabel.appendChild(featuredCheckbox);
   featuredLabel.appendChild(document.createTextNode('featured'));
   head.appendChild(featuredLabel);
+
+  const promptBtn = document.createElement('button');
+  promptBtn.type = 'button';
+  promptBtn.className = 'admin-icon-btn';
+  promptBtn.textContent = 'copy prompt for claude';
+  promptBtn.addEventListener('click', async () => {
+    const readme = readmeCache.get(project.id) || '';
+    const prompt = buildClaudePrompt(project, readme);
+    try {
+      await navigator.clipboard.writeText(prompt);
+      promptBtn.textContent = 'copied ✓';
+    } catch {
+      promptBtn.textContent = 'copy failed';
+    }
+    setTimeout(() => { promptBtn.textContent = 'copy prompt for claude'; }, 1600);
+  });
+  head.appendChild(promptBtn);
 
   const upBtn = document.createElement('button');
   upBtn.type = 'button';

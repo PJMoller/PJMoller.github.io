@@ -17,44 +17,68 @@
     <header class="admin-header">
       <a href="../" class="nav-logo">PM</a>
       <h1 class="admin-title"><span class="prompt-mark">$</span> admin ./projects</h1>
+      <button id="lock-btn" class="admin-icon-btn admin-lock-btn" type="button" hidden>lock</button>
     </header>
 
-    <section class="admin-panel" id="auth-panel">
-      <h2 class="admin-panel-heading">connect</h2>
+    <section class="admin-panel" id="lock-panel">
+      <h2 class="admin-panel-heading">locked</h2>
       <p class="admin-hint">
-        Paste a GitHub personal access token with read/write access to
-        <code>PJMoller/PJMoller.github.io</code> (a fine-grained token scoped to just this
-        repo, with Contents: Read and write, is the safest option). It's stored only in
-        this browser's local storage and only ever sent straight to GitHub's API,
-        never anywhere else.
+        This is a deterrent, not real security, anyone reading this page's source could
+        find their way around it. The GitHub token below is what actually protects the
+        repo from changes.
       </p>
       <div class="admin-row">
-        <input type="password" id="token-input" placeholder="github_pat_..." class="admin-input" autocomplete="off">
-        <button id="load-btn" class="hero-cta" type="button">load projects</button>
-        <button id="clear-token-btn" class="contact-btn contact-btn-ghost" type="button">forget token</button>
+        <input type="password" id="gate-password-input" class="admin-input" placeholder="password" autocomplete="off">
+        <button id="gate-unlock-btn" class="hero-cta" type="button">unlock</button>
       </div>
-      <p class="admin-status" id="auth-status"></p>
+      <p class="admin-status" id="gate-status"></p>
     </section>
 
-    <section class="admin-panel" id="import-panel" hidden>
-      <h2 class="admin-panel-heading">import from github</h2>
-      <p class="admin-hint">Paste a repo URL to pull in its name and primary language as a starting point, then fill in the story yourself.</p>
-      <div class="admin-row">
-        <input type="text" id="import-url" placeholder="https://github.com/owner/repo" class="admin-input">
-        <button id="import-btn" class="hero-cta" type="button">import</button>
+    <div id="admin-content" hidden>
+
+      <section class="admin-panel" id="auth-panel">
+        <h2 class="admin-panel-heading">connect</h2>
+        <p class="admin-hint">
+          Paste a GitHub personal access token with read/write access to
+          <code>PJMoller/PJMoller.github.io</code> (a fine-grained token scoped to just this
+          repo, with Contents: Read and write, is the safest option). It's stored only in
+          this browser's local storage and only ever sent straight to GitHub's API,
+          never anywhere else.
+        </p>
+        <div class="admin-row">
+          <input type="password" id="token-input" placeholder="github_pat_..." class="admin-input" autocomplete="off">
+          <button id="load-btn" class="hero-cta" type="button">load projects</button>
+          <button id="clear-token-btn" class="contact-btn contact-btn-ghost" type="button">forget token</button>
+        </div>
+        <p class="admin-status" id="auth-status"></p>
+      </section>
+
+      <section class="admin-panel" id="import-panel" hidden>
+        <h2 class="admin-panel-heading">import from github</h2>
+        <p class="admin-hint">
+          Paste a repo URL to pull in its name, primary language, and README. Each
+          imported project gets a "copy prompt for claude" button, click it, paste the
+          prompt into a Claude chat, and paste the blurb/story it writes back into the
+          fields below, the same way I've been writing these throughout this project.
+        </p>
+        <div class="admin-row">
+          <input type="text" id="import-url" placeholder="https://github.com/owner/repo" class="admin-input">
+          <button id="import-btn" class="hero-cta" type="button">import</button>
+        </div>
+        <p class="admin-status" id="import-status"></p>
+      </section>
+
+      <section class="admin-panel" id="projects-panel" hidden>
+        <h2 class="admin-panel-heading">projects <span class="admin-panel-sub">(top of the list = featured order, toggle "featured" to move between the grid and the compact list)</span></h2>
+        <div id="projects-editor" class="admin-projects"></div>
+        <button id="add-project-btn" class="contact-btn contact-btn-ghost" type="button">+ add project manually</button>
+      </section>
+
+      <div class="admin-save-bar" id="save-bar" hidden>
+        <button id="save-btn" class="hero-cta" type="button">save to github</button>
+        <span class="admin-status" id="save-status"></span>
       </div>
-      <p class="admin-status" id="import-status"></p>
-    </section>
 
-    <section class="admin-panel" id="projects-panel" hidden>
-      <h2 class="admin-panel-heading">projects <span class="admin-panel-sub">(top of the list = featured order, toggle "featured" to move between the grid and the compact list)</span></h2>
-      <div id="projects-editor" class="admin-projects"></div>
-      <button id="add-project-btn" class="contact-btn contact-btn-ghost" type="button">+ add project manually</button>
-    </section>
-
-    <div class="admin-save-bar" id="save-bar" hidden>
-      <button id="save-btn" class="hero-cta" type="button">save to github</button>
-      <span class="admin-status" id="save-status"></span>
     </div>
 
   </div>

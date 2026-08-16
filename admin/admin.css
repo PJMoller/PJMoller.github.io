@@ -17,6 +17,10 @@
   margin-bottom: 40px;
 }
 
+.admin-lock-btn {
+  margin-left: auto;
+}
+
 .admin-title {
   font-size: 1.1rem;
   color: var(--fg);
