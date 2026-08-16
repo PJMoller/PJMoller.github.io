@@ -15,7 +15,7 @@ const GATE_KEY = 'pjmoller_admin_gate_ok';
 // file (which is public, since GitHub Pages serves everything in this
 // repo), never the password itself, that only exists in your head.
 // Not set yet, everyone stays locked out until this is filled in.
-const GATE_HASH = '';
+const GATE_HASH = 'feb3b09166bf61d38cc4a1d23bb6c32814dde2cef6ca72a174715ce17329f9f9';
 
 let projects = [];
 let fileSha = null;
