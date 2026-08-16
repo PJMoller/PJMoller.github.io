@@ -1,21 +1,15 @@
-// ---- Admin panel: reads and writes projects.json directly in the
-// PJMoller.github.io repo via the GitHub REST API, using a personal
-// access token pasted in by hand and kept only in this browser's
-// localStorage. No backend, no build step, GitHub Pages just picks up
-// the new projects.json the next time it rebuilds after a save. ----
+// ---- Admin panel ----
+// Talks to a Cloudflare Worker (see /worker in the repo, deployed
+// separately) instead of GitHub directly. The Worker holds the real
+// password and the GitHub token as server-side secrets, neither one is
+// ever present in this file or shipped to the browser. This file only
+// ever sees a short-lived session token after a successful login.
 
-const OWNER = 'PJMoller';
-const REPO = 'PJMoller.github.io';
-const FILE_PATH = 'projects.json';
-const BRANCH = 'main';
-const TOKEN_KEY = 'pjmoller_admin_token';
-const GATE_KEY = 'pjmoller_admin_gate_ok';
+// Fill this in once the Worker is deployed, e.g.
+// 'https://pjmoller-admin.yoursubdomain.workers.dev'
+const WORKER_URL = '';
 
-// SHA-256 hex digest of the admin password. Only the hash lives in this
-// file (which is public, since GitHub Pages serves everything in this
-// repo), never the password itself, that only exists in your head.
-// Not set yet, everyone stays locked out until this is filled in.
-const GATE_HASH = 'feb3b09166bf61d38cc4a1d23bb6c32814dde2cef6ca72a174715ce17329f9f9';
+const SESSION_KEY = 'pjmoller_admin_session';
 
 let projects = [];
 let fileSha = null;
@@ -27,11 +21,6 @@ const lockBtn = document.getElementById('lock-btn');
 const gateInput = document.getElementById('gate-password-input');
 const gateBtn = document.getElementById('gate-unlock-btn');
 const gateStatus = document.getElementById('gate-status');
-
-const tokenInput = document.getElementById('token-input');
-const loadBtn = document.getElementById('load-btn');
-const clearTokenBtn = document.getElementById('clear-token-btn');
-const authStatus = document.getElementById('auth-status');
 
 const importPanel = document.getElementById('import-panel');
 const importUrl = document.getElementById('import-url');
@@ -46,11 +35,20 @@ const saveBar = document.getElementById('save-bar');
 const saveBtn = document.getElementById('save-btn');
 const saveStatus = document.getElementById('save-status');
 
-// ---- password gate (deterrent only, see note in the HTML) ----
-async function sha256Hex(text) {
-  const bytes = new TextEncoder().encode(text);
-  const digest = await crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+function setStatus(el, text, kind) {
+  el.textContent = text;
+  el.className = 'admin-status' + (kind ? ' ' + kind : '');
+}
+
+// ---- session ----
+function getSession() {
+  return localStorage.getItem(SESSION_KEY) || '';
+}
+function setSession(token) {
+  localStorage.setItem(SESSION_KEY, token);
+}
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
 }
 
 function showUnlocked() {
@@ -59,115 +57,134 @@ function showUnlocked() {
   lockBtn.hidden = false;
 }
 function showLocked() {
+  clearSession();
   lockPanel.hidden = false;
   adminContent.hidden = true;
   lockBtn.hidden = true;
   gateInput.value = '';
+  importPanel.hidden = true;
+  projectsPanel.hidden = true;
+  saveBar.hidden = true;
 }
-
-if (GATE_HASH && localStorage.getItem(GATE_KEY) === GATE_HASH) {
-  showUnlocked();
-}
-
-gateBtn.addEventListener('click', async () => {
-  if (!GATE_HASH) {
-    setStatus(gateStatus, 'no password has been configured yet.', 'err');
-    return;
-  }
-  const hash = await sha256Hex(gateInput.value);
-  if (hash === GATE_HASH) {
-    localStorage.setItem(GATE_KEY, GATE_HASH);
-    showUnlocked();
-  } else {
-    setStatus(gateStatus, 'wrong password.', 'err');
-  }
-});
-gateInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') gateBtn.click();
-});
-lockBtn.addEventListener('click', () => {
-  localStorage.removeItem(GATE_KEY);
-  showLocked();
-});
-
-// ---- token storage ----
-function getToken() {
-  return localStorage.getItem(TOKEN_KEY) || '';
-}
-function setToken(token) {
-  localStorage.setItem(TOKEN_KEY, token);
-}
-function clearToken() {
-  localStorage.removeItem(TOKEN_KEY);
-  tokenInput.value = '';
-}
-
-const savedToken = getToken();
-if (savedToken) tokenInput.value = savedToken;
 
 // ---- utf-8 safe base64 helpers (plain atob/btoa mangle non-ASCII) ----
 function utf8ToBase64(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = '';
-  bytes.forEach(b => { binary += String.fromCharCode(b); });
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
   return btoa(binary);
 }
 function base64ToUtf8(b64) {
   const binary = atob(b64.replace(/\n/g, ''));
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
   return new TextDecoder('utf-8').decode(bytes);
 }
 
-// ---- GitHub API ----
-async function ghGet(path) {
-  const token = getToken();
-  const headers = { Accept: 'application/vnd.github+json' };
-  if (token) headers.Authorization = 'token ' + token;
-  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`, { headers });
-  if (!res.ok) throw new Error(`GitHub returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
-}
-
-async function ghPut(path, contentStr, message, sha) {
-  const token = getToken();
-  if (!token) throw new Error('No token set.');
-  const body = { message, content: utf8ToBase64(contentStr), branch: BRANCH };
-  if (sha) body.sha = sha;
-  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`, {
-    method: 'PUT',
+// ---- Worker API ----
+async function workerFetch(path, options = {}) {
+  if (!WORKER_URL) throw new Error('WORKER_URL is not set in admin.js yet.');
+  const session = getSession();
+  const res = await fetch(WORKER_URL + path, {
+    ...options,
     headers: {
-      Accept: 'application/vnd.github+json',
-      Authorization: 'token ' + token,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      ...(session ? { Authorization: 'Bearer ' + session } : {}),
+      ...(options.headers || {}),
     },
-    body: JSON.stringify(body)
   });
-  if (!res.ok) throw new Error(`GitHub returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
-}
-
-async function ghRepoInfo(owner, repo) {
-  const token = getToken();
-  const headers = { Accept: 'application/vnd.github+json' };
-  if (token) headers.Authorization = 'token ' + token;
-  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
-  if (!res.ok) throw new Error(`GitHub returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
-}
-
-// best-effort README fetch, used only to build the "copy prompt for
-// claude" text, never saved to projects.json.
-async function ghReadme(owner, repo) {
-  const token = getToken();
-  const headers = { Accept: 'application/vnd.github.raw+json' };
-  if (token) headers.Authorization = 'token ' + token;
-  try {
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme`, { headers });
-    if (!res.ok) return '';
-    return await res.text();
-  } catch {
-    return '';
+  if (res.status === 401) {
+    showLocked();
+    setStatus(gateStatus, 'session expired, log in again.', 'err');
+    throw new Error('unauthorized');
   }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `worker returned ${res.status}`);
+  return data;
+}
+
+async function login(password) {
+  const res = await fetch(WORKER_URL + '/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'login failed');
+  return data.token;
+}
+
+async function loadProjects() {
+  const data = await workerFetch('/projects');
+  fileSha = data.sha;
+  projects = JSON.parse(base64ToUtf8(data.content));
+  projects.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
+
+async function saveProjects() {
+  projects.forEach((p, i) => { p.order = i + 1; });
+  const jsonStr = JSON.stringify(projects, null, 2) + '\n';
+  const data = await workerFetch('/projects', {
+    method: 'PUT',
+    body: JSON.stringify({ content: utf8ToBase64(jsonStr), sha: fileSha }),
+  });
+  fileSha = data.content.sha;
+}
+
+async function importFromGithub(repoUrl) {
+  return workerFetch('/import?url=' + encodeURIComponent(repoUrl));
+}
+
+// ---- login flow ----
+if (WORKER_URL && getSession()) {
+  showUnlocked();
+  loadProjects()
+    .then(() => {
+      renderEditor();
+      importPanel.hidden = false;
+      projectsPanel.hidden = false;
+      saveBar.hidden = false;
+    })
+    .catch((err) => {
+      if (err.message !== 'unauthorized') setStatus(gateStatus, 'failed to load: ' + err.message, 'err');
+    });
+}
+
+gateBtn.addEventListener('click', async () => {
+  if (!WORKER_URL) {
+    setStatus(gateStatus, 'admin.js has no WORKER_URL set yet, deploy the Worker first.', 'err');
+    return;
+  }
+  setStatus(gateStatus, 'checking…');
+  try {
+    const token = await login(gateInput.value);
+    setSession(token);
+    showUnlocked();
+    setStatus(gateStatus, 'loading projects…');
+    await loadProjects();
+    renderEditor();
+    importPanel.hidden = false;
+    projectsPanel.hidden = false;
+    saveBar.hidden = false;
+    setStatus(gateStatus, `loaded ${projects.length} projects.`, 'ok');
+  } catch (err) {
+    setStatus(gateStatus, err.message === 'wrong password' ? 'wrong password.' : err.message, 'err');
+  }
+});
+gateInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') gateBtn.click();
+});
+lockBtn.addEventListener('click', showLocked);
+
+// ---- helpers ----
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'project';
+}
+function uniqueId(base) {
+  let id = base;
+  let n = 2;
+  const existing = new Set(projects.map((p) => p.id));
+  while (existing.has(id)) { id = `${base}-${n}`; n++; }
+  return id;
 }
 
 function buildClaudePrompt(project, readme) {
@@ -192,66 +209,13 @@ blurb: ...
 story: ...`;
 }
 
-// ---- helpers ----
-function slugify(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'project';
-}
-function uniqueId(base) {
-  let id = base;
-  let n = 2;
-  const existing = new Set(projects.map(p => p.id));
-  while (existing.has(id)) { id = `${base}-${n}`; n++; }
-  return id;
-}
-function setStatus(el, text, kind) {
-  el.textContent = text;
-  el.className = 'admin-status' + (kind ? ' ' + kind : '');
-}
-
-// ---- load ----
-loadBtn.addEventListener('click', async () => {
-  const token = tokenInput.value.trim();
-  if (!token) {
-    setStatus(authStatus, 'paste a token first.', 'err');
-    return;
-  }
-  setToken(token);
-  setStatus(authStatus, 'loading projects.json…');
-  try {
-    const data = await ghGet(FILE_PATH);
-    fileSha = data.sha;
-    projects = JSON.parse(base64ToUtf8(data.content));
-    projects.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    renderEditor();
-    importPanel.hidden = false;
-    projectsPanel.hidden = false;
-    saveBar.hidden = false;
-    setStatus(authStatus, `loaded ${projects.length} projects.`, 'ok');
-  } catch (err) {
-    setStatus(authStatus, 'failed to load: ' + err.message, 'err');
-  }
-});
-
-clearTokenBtn.addEventListener('click', () => {
-  clearToken();
-  setStatus(authStatus, 'token forgotten from this browser.', 'ok');
-});
-
 // ---- import from github ----
 importBtn.addEventListener('click', async () => {
   const raw = importUrl.value.trim();
   if (!raw) return;
-  const match = raw.match(/github\.com\/([^\/]+)\/([^\/#]+)/i);
-  if (!match) {
-    setStatus(importStatus, 'paste a full github.com/owner/repo url.', 'err');
-    return;
-  }
-  const [, owner, repoRaw] = match;
-  const repo = repoRaw.replace(/\.git$/, '');
-  setStatus(importStatus, `fetching ${owner}/${repo}…`);
+  setStatus(importStatus, 'fetching…');
   try {
-    const info = await ghRepoInfo(owner, repo);
-    const readme = await ghReadme(owner, repo);
+    const { info, readme } = await importFromGithub(raw);
     const title = info.name;
     const id = uniqueId(slugify(title));
     const project = {
@@ -262,7 +226,7 @@ importBtn.addEventListener('click', async () => {
       detail: info.description || '',
       repos: [{ label: 'repo', url: info.html_url }],
       featured: false,
-      order: projects.length + 1
+      order: projects.length + 1,
     };
     if (readme) readmeCache.set(id, readme);
     projects.push(project);
@@ -289,7 +253,7 @@ addProjectBtn.addEventListener('click', () => {
     detail: '',
     repos: [],
     featured: false,
-    order: projects.length + 1
+    order: projects.length + 1,
   });
   renderEditor();
   const block = editorEl.querySelector(`[data-id="${CSS.escape(id)}"]`);
@@ -309,7 +273,6 @@ function buildProjectBlock(project, index) {
   block.className = 'admin-project';
   block.dataset.id = project.id;
 
-  // ---- head row: title, featured toggle, move/delete ----
   const head = document.createElement('div');
   head.className = 'admin-project-head';
 
@@ -392,7 +355,7 @@ function buildProjectBlock(project, index) {
   tagsInput.className = 'admin-input';
   tagsInput.value = project.tags.join(', ');
   tagsInput.addEventListener('input', () => {
-    project.tags = tagsInput.value.split(',').map(t => t.trim()).filter(Boolean);
+    project.tags = tagsInput.value.split(',').map((t) => t.trim()).filter(Boolean);
   });
   tagsField.appendChild(tagsInput);
   block.appendChild(tagsField);
@@ -435,7 +398,7 @@ function buildProjectBlock(project, index) {
   const reposList = document.createElement('div');
   reposList.className = 'admin-repos';
   project.repos.forEach((repo, repoIndex) => {
-    reposList.appendChild(buildRepoRow(project, repo, repoIndex, reposList));
+    reposList.appendChild(buildRepoRow(project, repo, repoIndex));
   });
   reposField.appendChild(reposList);
 
@@ -445,7 +408,7 @@ function buildProjectBlock(project, index) {
   addRepoBtn.textContent = '+ add repo link';
   addRepoBtn.addEventListener('click', () => {
     project.repos.push({ label: 'repo', url: '' });
-    reposList.appendChild(buildRepoRow(project, project.repos[project.repos.length - 1], project.repos.length - 1, reposList));
+    reposList.appendChild(buildRepoRow(project, project.repos[project.repos.length - 1], project.repos.length - 1));
   });
   reposField.appendChild(addRepoBtn);
 
@@ -454,7 +417,7 @@ function buildProjectBlock(project, index) {
   return block;
 }
 
-function buildRepoRow(project, repo, repoIndex, reposList) {
+function buildRepoRow(project, repo) {
   const row = document.createElement('div');
   row.className = 'admin-repo-row';
 
@@ -488,13 +451,10 @@ function buildRepoRow(project, repo, repoIndex, reposList) {
 
 // ---- save ----
 saveBtn.addEventListener('click', async () => {
-  projects.forEach((p, i) => { p.order = i + 1; });
-  const jsonStr = JSON.stringify(projects, null, 2) + '\n';
   setStatus(saveStatus, 'saving…');
   saveBtn.disabled = true;
   try {
-    const result = await ghPut(FILE_PATH, jsonStr, 'update projects via admin panel', fileSha);
-    fileSha = result.content.sha;
+    await saveProjects();
     setStatus(saveStatus, 'saved. GitHub Pages will pick it up on the live site in under a minute.', 'ok');
   } catch (err) {
     setStatus(saveStatus, 'save failed: ' + err.message, 'err');

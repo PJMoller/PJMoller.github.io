@@ -21,11 +21,11 @@
     </header>
 
     <section class="admin-panel" id="lock-panel">
-      <h2 class="admin-panel-heading">locked</h2>
+      <h2 class="admin-panel-heading">connect</h2>
       <p class="admin-hint">
-        This is a deterrent, not real security, anyone reading this page's source could
-        find their way around it. The GitHub token below is what actually protects the
-        repo from changes.
+        Your password and GitHub token both live server-side in a Cloudflare Worker now,
+        never in this page. This just asks the Worker to check the password and hand back
+        a session.
       </p>
       <div class="admin-row">
         <input type="password" id="gate-password-input" class="admin-input" placeholder="password" autocomplete="off">
@@ -35,23 +35,6 @@
     </section>
 
     <div id="admin-content" hidden>
-
-      <section class="admin-panel" id="auth-panel">
-        <h2 class="admin-panel-heading">connect</h2>
-        <p class="admin-hint">
-          Paste a GitHub personal access token with read/write access to
-          <code>PJMoller/PJMoller.github.io</code> (a fine-grained token scoped to just this
-          repo, with Contents: Read and write, is the safest option). It's stored only in
-          this browser's local storage and only ever sent straight to GitHub's API,
-          never anywhere else.
-        </p>
-        <div class="admin-row">
-          <input type="password" id="token-input" placeholder="github_pat_..." class="admin-input" autocomplete="off">
-          <button id="load-btn" class="hero-cta" type="button">load projects</button>
-          <button id="clear-token-btn" class="contact-btn contact-btn-ghost" type="button">forget token</button>
-        </div>
-        <p class="admin-status" id="auth-status"></p>
-      </section>
 
       <section class="admin-panel" id="import-panel" hidden>
         <h2 class="admin-panel-heading">import from github</h2>
