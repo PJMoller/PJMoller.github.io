@@ -52,10 +52,16 @@
       "notes": "Anti-flying, raichu takes mega slot idk who we mega tho"
     },
     {
-      "mon": "Sneasler",
+      "mon": "Kommo-o",
       "budget": "",
-      "alt": "Kommo-o",
+      "alt": "Sneasler",
       "notes": "fighting type"
+    },
+    {
+      "mon": "Smeargle",
+      "budget": "",
+      "alt": "Araq, Bee",
+      "notes": "Webs cheese, good synergy"
     }
   ],
   "conditional": [
@@ -70,12 +76,6 @@
       "budget": "",
       "alt": "",
       "notes": "fallback core with Dragapult if Groudon is unavailable/banned"
-    },
-    {
-      "mon": "Smeargle",
-      "budget": "",
-      "alt": "Bee, Araq",
-      "notes": "cheese option if needed"
     },
     {
       "mon": "Torkoal",
