@@ -22,10 +22,10 @@
   ],
   "normals": [
     {
-      "mon": "Dragapult",
+      "mon": "Dragonite",
       "budget": "",
-      "alt": "Dragonite",
-      "notes": "keeps Coalossal pairing open, more versatile than the alt"
+      "alt": "Dragapult",
+      "notes": "Need dnite bulk. Pult keeps Coalossal pairing open, more versatile than the alt"
     },
     {
       "mon": "Glimmora",
@@ -49,7 +49,7 @@
       "mon": "Baxcalibur",
       "budget": "",
       "alt": "Darm-g, Raichu",
-      "notes": ""
+      "notes": "Anti-flying, raichu takes mega slot idk who we mega tho"
     }
   ],
   "conditional": [
@@ -81,7 +81,7 @@
       "mon": "Araquanid",
       "budget": "",
       "alt": "",
-      "notes": "Nice for webs"
+      "notes": "Nice for webs, water resist"
     },
     {
       "mon": "Dragonite",
