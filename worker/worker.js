@@ -11,13 +11,21 @@
 //   GET  /projects            -> current projects.json content + sha
 //   PUT  /projects             { content, sha } -> commits to the repo
 //   GET  /import?url=<repo>   -> { info, readme } for the "import from github" box
+//   GET  /pokemon             -> current pokemon.json content + sha
+//   PUT  /pokemon              { content, sha } -> commits to the repo
 //
-// Everything except /login requires `Authorization: Bearer <token>`.
+// Everything except /login, GET /pokemon and PUT /pokemon requires
+// `Authorization: Bearer <token>`. The /pokemon routes are intentionally
+// open, no login, so anyone with the page open can edit and save the
+// draft plan, they're scoped to their own file so they can't touch
+// projects.json.
 
 const ALLOWED_ORIGIN = 'https://pjmoller.github.io';
 const OWNER = 'PJMoller';
 const REPO = 'PJMoller.github.io';
 const FILE_PATH = 'projects.json';
+const POKEMON_FILE_PATH = 'pokemon.json';
+const POKEMON_MAX_BYTES = 50_000; // guard against absurd/abusive payloads on the open endpoint
 const BRANCH = 'main';
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
@@ -107,6 +115,36 @@ export default {
       }
       const token = await makeSession(env.SESSION_SECRET);
       return json({ token });
+    }
+
+    // open, no login: the pokemon draft plan is editable by anyone with
+    // the page open. Scoped to its own file, can't touch projects.json.
+    if (url.pathname === '/pokemon' && request.method === 'GET') {
+      const res = await githubFetch(env, `/repos/${OWNER}/${REPO}/contents/${POKEMON_FILE_PATH}?ref=${BRANCH}`);
+      const data = await res.json();
+      return json(data, res.status);
+    }
+
+    if (url.pathname === '/pokemon' && request.method === 'PUT') {
+      const body = await request.json().catch(() => ({}));
+      if (typeof body.content !== 'string' || typeof body.sha !== 'string') {
+        return json({ error: 'missing content or sha' }, 400);
+      }
+      if (body.content.length > POKEMON_MAX_BYTES) {
+        return json({ error: 'payload too large' }, 413);
+      }
+      const res = await githubFetch(env, `/repos/${OWNER}/${REPO}/contents/${POKEMON_FILE_PATH}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'update pokemon draft plan',
+          content: body.content,
+          sha: body.sha,
+          branch: BRANCH,
+        }),
+      });
+      const data = await res.json();
+      return json(data, res.status);
     }
 
     // everything below requires a valid session

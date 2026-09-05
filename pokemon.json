@@ -1,0 +1,25 @@
+{
+  "intro": "Draft league team plan. One special mon gets brought per match, the other two sit in reserve, the six normal-tier mons make up the rest of the roster. Budget is a per-mon ceiling from the auction, if a mon goes over it, pivot straight to the listed alt.",
+  "specials": [
+    { "mon": "Groudon", "budget": "", "alt": "Arceus", "notes": "core sun/phys-spam piece, pivot to Arceus if it goes over budget" },
+    { "mon": "Chien-Pao", "budget": "", "alt": "", "notes": "phys spam" },
+    { "mon": "Zapdos (Galarian)", "budget": "", "alt": "", "notes": "Galarian form specifically, in for Defiant" }
+  ],
+  "normals": [
+    { "mon": "Dragapult", "budget": "", "alt": "Dragonite", "notes": "keeps Coalossal pairing open, more versatile than the alt" },
+    { "mon": "Glimmora", "budget": "", "alt": "", "notes": "hazards / fat ground support" },
+    { "mon": "Ting-Lu", "budget": "", "alt": "", "notes": "fat ground support, anti-offense with Glimmora" }
+  ],
+  "conditional": [
+    { "mon": "Lilligant (Hisuian)", "budget": "", "alt": "", "notes": "only drafted if Groudon is secured, sun team piece" },
+    { "mon": "Coalossal", "budget": "", "alt": "", "notes": "fallback core with Dragapult if Groudon is unavailable/banned" },
+    { "mon": "Smeargle", "budget": "", "alt": "", "notes": "not necessary, cheese option if needed" },
+    { "mon": "Torkoal", "budget": "", "alt": "", "notes": "wanted add, sun support" },
+    { "mon": "Araquanid", "budget": "", "alt": "", "notes": "wanted add" }
+  ],
+  "variations": [
+    "sun — Groudon + Lilligant-Hisui, rest of the roster as support",
+    "phys spam — Chien-Pao + Dragapult",
+    "Coalossal line — Coalossal + Dragapult, the fallback if Groudon doesn't come through"
+  ]
+}

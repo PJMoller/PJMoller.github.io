@@ -19,119 +19,58 @@
       <h1 class="pkmn-title"><span class="prompt-mark">$</span> cat draft-plan.txt</h1>
     </header>
 
-    <p class="pkmn-intro">
-      Draft league team plan. One special mon gets brought per match, the other two
-      sit in reserve, the six normal-tier mons make up the rest of the roster. Budget
-      is a per-mon ceiling from the auction, if a mon goes over it, pivot straight to
-      the listed alt.
+    <p class="pkmn-edit-hint">
+      Editable by anyone with this page open, click any field and edit it, then hit save.
     </p>
+
+    <textarea id="pkmn-intro" class="pkmn-intro-input" rows="3"></textarea>
 
     <section class="pkmn-section">
       <h2 class="pkmn-heading">specials <span class="pkmn-sub">bring 1 per match</span></h2>
       <div class="pkmn-table">
         <div class="pkmn-row pkmn-row-head">
-          <span>mon</span><span>budget</span><span>alt</span><span>notes</span>
+          <span>mon</span><span>budget</span><span>alt</span><span>notes</span><span></span>
         </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Groudon</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">Arceus</span>
-          <span class="pkmn-notes">core sun/phys-spam piece, pivot to Arceus if it goes over budget</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Chien-Pao</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">phys spam</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Zapdos <em>(Galarian)</em></span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">Galarian form specifically, in for Defiant</span>
-        </div>
+        <div id="pkmn-specials" class="pkmn-rows"></div>
       </div>
+      <button type="button" class="pkmn-add-btn" data-group="specials">+ row</button>
     </section>
 
     <section class="pkmn-section">
       <h2 class="pkmn-heading">core normals</h2>
       <div class="pkmn-table">
         <div class="pkmn-row pkmn-row-head">
-          <span>mon</span><span>budget</span><span>alt</span><span>notes</span>
+          <span>mon</span><span>budget</span><span>alt</span><span>notes</span><span></span>
         </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Dragapult</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">Dragonite</span>
-          <span class="pkmn-notes">keeps Coalossal pairing open, more versatile than the alt</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Glimmora</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">hazards / fat ground support</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Ting-Lu</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">fat ground support, anti-offense with Glimmora</span>
-        </div>
+        <div id="pkmn-normals" class="pkmn-rows"></div>
       </div>
+      <button type="button" class="pkmn-add-btn" data-group="normals">+ row</button>
     </section>
 
     <section class="pkmn-section">
       <h2 class="pkmn-heading">conditional / bench <span class="pkmn-sub">only make the team under certain conditions</span></h2>
       <div class="pkmn-table">
         <div class="pkmn-row pkmn-row-head">
-          <span>mon</span><span>budget</span><span>alt</span><span>condition</span>
+          <span>mon</span><span>budget</span><span>alt</span><span>notes</span><span></span>
         </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Lilligant <em>(Hisuian)</em></span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">only drafted if Groudon is secured, sun team piece</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Coalossal</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">fallback core with Dragapult if Groudon is unavailable/banned</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Smeargle</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">not necessary, cheese option if needed</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Torkoal</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">wanted add, sun support</span>
-        </div>
-        <div class="pkmn-row">
-          <span class="pkmn-mon">Araquanid</span>
-          <span class="pkmn-budget">—</span>
-          <span class="pkmn-alt">—</span>
-          <span class="pkmn-notes">wanted add</span>
-        </div>
+        <div id="pkmn-conditional" class="pkmn-rows"></div>
       </div>
+      <button type="button" class="pkmn-add-btn" data-group="conditional">+ row</button>
     </section>
 
     <section class="pkmn-section">
       <h2 class="pkmn-heading">how the team can shake out</h2>
-      <p class="pkmn-note">
-        Same pool of mons, three different builds depending on how the auction goes:
-      </p>
-      <ul class="pkmn-variations">
-        <li><strong>sun</strong> — Groudon + Lilligant-Hisui, rest of the roster as support</li>
-        <li><strong>phys spam</strong> — Chien-Pao + Dragapult</li>
-        <li><strong>Coalossal line</strong> — Coalossal + Dragapult, the fallback if Groudon doesn't come through</li>
-      </ul>
+      <div id="pkmn-variations" class="pkmn-variations"></div>
+      <button type="button" id="pkmn-add-variation" class="pkmn-add-btn">+ line</button>
     </section>
+
+    <div class="pkmn-save-bar">
+      <button type="button" id="pkmn-save-btn" class="hero-cta">save</button>
+      <span class="pkmn-status" id="pkmn-status"></span>
+    </div>
 
   </div>
 
+  <script src="pokemon.js"></script>
 </body>
 </html>
