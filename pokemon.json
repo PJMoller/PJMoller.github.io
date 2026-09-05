@@ -52,15 +52,15 @@
       "notes": "Anti-flying, raichu takes mega slot idk who we mega tho"
     },
     {
-      "mon": "Serperior",
-      "budget": "",
-      "alt": "",
-      "notes": "If you can ban resists this guy goes crazy, rest of team supports"
-    },
-    {
       "mon": "Smeargle",
       "budget": "",
       "alt": "Ribombee, Araquanid",
+      "notes": ""
+    },
+    {
+      "mon": "Hatterene",
+      "budget": "",
+      "alt": "",
       "notes": ""
     }
   ],
@@ -108,10 +108,10 @@
       "notes": "Dragon immune, hazard control"
     },
     {
-      "mon": "Ferrothorn",
+      "mon": "Serperior",
       "budget": "",
       "alt": "",
-      "notes": "if we end up building bulkier maybe lol"
+      "notes": ""
     }
   ],
   "variations": [
