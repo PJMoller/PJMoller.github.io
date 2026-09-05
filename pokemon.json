@@ -58,10 +58,10 @@
       "notes": ""
     },
     {
-      "mon": "Hatterene",
+      "mon": "Kingambit",
       "budget": "",
       "alt": "",
-      "notes": ""
+      "notes": "Another hazard control"
     }
   ],
   "conditional": [
@@ -100,12 +100,6 @@
       "budget": "",
       "alt": "",
       "notes": "Good prio, water type"
-    },
-    {
-      "mon": "Hatterene",
-      "budget": "",
-      "alt": "",
-      "notes": "Dragon immune, hazard control"
     },
     {
       "mon": "Serperior",
