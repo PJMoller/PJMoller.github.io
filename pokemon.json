@@ -2,9 +2,9 @@
   "intro": "Draft league team plan. One special mon gets brought per match, the other two sit in reserve, the six normal-tier mons make up the rest of the roster. Budget is a per-mon ceiling from the auction, if a mon goes over it, pivot straight to the listed alt.",
   "specials": [
     {
-      "mon": "Groudon",
+      "mon": "Arceus",
       "budget": "",
-      "alt": "Arceus",
+      "alt": "Groudon",
       "notes": "core sun/phys-spam piece, pivot to Arceus if it goes over budget"
     },
     {
