@@ -78,12 +78,6 @@
       "notes": "wanted add, sun support"
     },
     {
-      "mon": "Araquanid",
-      "budget": "",
-      "alt": "",
-      "notes": "Nice for webs, water resist"
-    },
-    {
       "mon": "Dragonite",
       "budget": "",
       "alt": "",
@@ -106,6 +100,12 @@
       "budget": "",
       "alt": "",
       "notes": "Dragon immune, hazard control"
+    },
+    {
+      "mon": "Araquanid",
+      "budget": "",
+      "alt": "",
+      "notes": "if no smeargle and you still have room left over"
     }
   ],
   "variations": [
