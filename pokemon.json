@@ -74,8 +74,8 @@
     {
       "mon": "Smeargle",
       "budget": "",
-      "alt": "",
-      "notes": "not necessary, cheese option if needed"
+      "alt": "Bee, Araq",
+      "notes": "cheese option if needed"
     },
     {
       "mon": "Torkoal",
@@ -111,12 +111,6 @@
       "mon": "Rotom",
       "budget": "",
       "alt": "",
-      "notes": ""
-    },
-    {
-      "mon": "Smeargle",
-      "budget": "",
-      "alt": "Bee, Araq",
       "notes": ""
     }
   ],
