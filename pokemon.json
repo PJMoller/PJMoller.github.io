@@ -42,7 +42,7 @@
     {
       "mon": "Gholdengo",
       "budget": "",
-      "alt": "Gambit, Aegi",
+      "alt": "Aegi",
       "notes": "Steel/ghost"
     },
     {
@@ -56,6 +56,12 @@
       "budget": "",
       "alt": "",
       "notes": "If you can ban resists this guy goes crazy, rest of team supports"
+    },
+    {
+      "mon": "Smeargle",
+      "budget": "",
+      "alt": "Ribombee, Araquanid",
+      "notes": ""
     }
   ],
   "conditional": [
