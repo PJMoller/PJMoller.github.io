@@ -38,6 +38,18 @@
       "budget": "",
       "alt": "",
       "notes": "fat ground support, anti-offense with Glimmora"
+    },
+    {
+      "mon": "Steel(Gamb/Ghold/Aegi)",
+      "budget": "",
+      "alt": "",
+      "notes": ""
+    },
+    {
+      "mon": "Anti-Flying(Bax/Darm/Raichu)",
+      "budget": "",
+      "alt": "",
+      "notes": ""
     }
   ],
   "conditional": [
@@ -69,7 +81,13 @@
       "mon": "Araquanid",
       "budget": "",
       "alt": "",
-      "notes": "wanted add"
+      "notes": "Nice for webs"
+    },
+    {
+      "mon": "Dragonite",
+      "budget": "",
+      "alt": "",
+      "notes": "If no pult"
     }
   ],
   "variations": [
