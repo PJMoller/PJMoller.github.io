@@ -52,12 +52,6 @@
       "notes": "Anti-flying, raichu takes mega slot idk who we mega tho"
     },
     {
-      "mon": "Smeargle",
-      "budget": "",
-      "alt": "Ribombee, Araquanid",
-      "notes": ""
-    },
-    {
       "mon": "Kingambit",
       "budget": "",
       "alt": "",
@@ -118,6 +112,12 @@
       "budget": "",
       "alt": "",
       "notes": ""
+    },
+    {
+      "mon": "Smeargle",
+      "budget": "",
+      "alt": "Bee, Araq",
+      "notes": "High prio"
     }
   ],
   "variations": [
