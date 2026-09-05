@@ -56,12 +56,6 @@
       "budget": "",
       "alt": "Sneasler",
       "notes": "fighting type"
-    },
-    {
-      "mon": "Smeargle",
-      "budget": "",
-      "alt": "Araq, Bee",
-      "notes": "Webs cheese, good synergy"
     }
   ],
   "conditional": [
@@ -111,6 +105,12 @@
       "mon": "Rotom",
       "budget": "",
       "alt": "",
+      "notes": ""
+    },
+    {
+      "mon": "Smeargle",
+      "budget": "",
+      "alt": "Bee, Araq",
       "notes": ""
     }
   ],
