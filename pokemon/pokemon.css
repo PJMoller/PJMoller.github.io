@@ -1,0 +1,133 @@
+.pkmn-body {
+  min-height: 100vh;
+}
+
+.pkmn-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 6vw 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.pkmn-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.pkmn-title {
+  font-size: 1.1rem;
+  color: var(--fg);
+}
+
+.pkmn-intro {
+  color: var(--fg-dim);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.pkmn-section {
+  margin-bottom: 40px;
+}
+
+.pkmn-heading {
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pkmn-sub {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--fg-dim);
+}
+
+.pkmn-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.pkmn-row {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.9fr 2.3fr;
+  gap: 14px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--border);
+}
+.pkmn-row:last-child { border-bottom: none; }
+
+.pkmn-row-head {
+  color: var(--fg-dim);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pkmn-mon {
+  color: var(--fg);
+  font-weight: 700;
+}
+.pkmn-mon em { color: var(--fg-dim); font-style: normal; font-size: 0.78rem; }
+
+.pkmn-budget {
+  color: var(--accent);
+}
+
+.pkmn-alt {
+  color: var(--accent-2);
+}
+
+.pkmn-notes {
+  color: var(--fg-dim);
+}
+
+.pkmn-note {
+  color: var(--fg-dim);
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.pkmn-variations {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pkmn-variations li {
+  color: var(--fg-dim);
+  font-size: 0.88rem;
+  padding-left: 20px;
+  position: relative;
+}
+.pkmn-variations li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 0.7rem;
+  top: 5px;
+}
+.pkmn-variations strong { color: var(--fg); }
+
+@media (max-width: 700px) {
+  .pkmn-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .pkmn-row-head { display: none; }
+  .pkmn-mon { font-size: 0.9rem; }
+  .pkmn-budget::before { content: 'budget: '; color: var(--fg-dim); }
+  .pkmn-alt::before { content: 'alt: '; color: var(--fg-dim); }
+}
