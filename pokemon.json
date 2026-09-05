@@ -40,10 +40,10 @@
       "notes": "fat ground support, anti-offense with Glimmora"
     },
     {
-      "mon": "Steel(Gamb/Ghold/Aegi)",
+      "mon": "Kingambit",
       "budget": "",
-      "alt": "",
-      "notes": ""
+      "alt": "Ghold, Aegi",
+      "notes": "Steel"
     },
     {
       "mon": "Anti-Flying(Bax/Darm/Raichu)",
@@ -88,6 +88,12 @@
       "budget": "",
       "alt": "",
       "notes": "If no pult"
+    },
+    {
+      "mon": "Alakazam",
+      "budget": "",
+      "alt": "",
+      "notes": "Sash is good anti-sweeper"
     }
   ],
   "variations": [
