@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>timer · Peter Möller</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%2339ff88' font-family='monospace'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="timer.css">
+</head>
+<body class="timer-body">
+
+  <div class="timer-wrap">
+
+    <header class="timer-header">
+      <a href="../" class="nav-logo">PM</a>
+      <h1 class="timer-title"><span class="prompt-mark">$</span> sleep</h1>
+    </header>
+
+    <!-- idle: pick a duration -->
+    <section class="timer-panel" id="setup-panel" hidden>
+      <p class="timer-hint">
+        Set a duration and start. Once it's running there is no pause, no reset and no cancel,
+        it keeps counting down through reloads and closed tabs until it hits zero.
+      </p>
+
+      <div class="timer-fields">
+        <label class="timer-field">
+          <input type="number" id="in-h" min="0" max="99" value="0" inputmode="numeric">
+          <span>hours</span>
+        </label>
+        <label class="timer-field">
+          <input type="number" id="in-m" min="0" max="59" value="25" inputmode="numeric">
+          <span>minutes</span>
+        </label>
+        <label class="timer-field">
+          <input type="number" id="in-s" min="0" max="59" value="0" inputmode="numeric">
+          <span>seconds</span>
+        </label>
+      </div>
+
+      <div class="timer-presets">
+        <button type="button" class="timer-preset" data-seconds="300">5m</button>
+        <button type="button" class="timer-preset" data-seconds="900">15m</button>
+        <button type="button" class="timer-preset" data-seconds="1500">25m</button>
+        <button type="button" class="timer-preset" data-seconds="3600">1h</button>
+      </div>
+
+      <div class="timer-actions">
+        <button type="button" id="start-btn" class="hero-cta">start</button>
+        <span class="timer-status" id="setup-status"></span>
+      </div>
+    </section>
+
+    <!-- running: countdown only, no controls -->
+    <section class="timer-panel" id="running-panel" hidden>
+      <div class="timer-display" id="display" role="timer" aria-live="off">00:00:00</div>
+      <div class="timer-bar"><div class="timer-bar-fill" id="bar-fill"></div></div>
+      <p class="timer-meta" id="meta"></p>
+    </section>
+
+    <!-- finished -->
+    <section class="timer-panel" id="done-panel" hidden>
+      <div class="timer-display timer-display-done">00:00:00</div>
+      <p class="timer-meta">time's up.</p>
+      <div class="timer-actions">
+        <button type="button" id="again-btn" class="hero-cta">new timer</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="timer.js"></script>
+</body>
+</html>

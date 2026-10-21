@@ -1,0 +1,136 @@
+.timer-body {
+  min-height: 100vh;
+}
+
+.timer-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 6vw 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.timer-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.timer-title {
+  font-size: 1.1rem;
+  color: var(--fg);
+}
+
+.timer-panel[hidden] { display: none; }
+
+.timer-hint {
+  color: var(--fg-dim);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.timer-fields {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.timer-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.timer-field span {
+  font-size: 0.72rem;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.timer-field input {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  text-align: center;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  padding: 14px 8px;
+}
+.timer-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.timer-presets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.timer-preset {
+  font-family: var(--mono);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg-dim);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.timer-preset:hover { border-color: var(--accent); color: var(--accent); }
+
+.timer-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.timer-status {
+  font-size: 0.82rem;
+  color: var(--danger);
+}
+
+.timer-display {
+  font-size: clamp(2.6rem, 14vw, 5.5rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  margin: 20px 0 28px;
+}
+.timer-display-done { color: var(--danger); }
+
+.timer-bar {
+  height: 6px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.timer-bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+
+.timer-meta {
+  text-align: center;
+  color: var(--fg-dim);
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+}
+
+#done-panel .timer-actions { justify-content: center; }
+
+/* flashes the finished screen so it's noticeable */
+@keyframes timer-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+#done-panel:not([hidden]) .timer-display { animation: timer-flash 1s steps(1) 6; }
