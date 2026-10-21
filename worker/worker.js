@@ -13,12 +13,18 @@
 //   GET  /import?url=<repo>   -> { info, readme } for the "import from github" box
 //   GET  /pokemon             -> current pokemon.json content + sha
 //   PUT  /pokemon              { content, sha } -> commits to the repo
+//   GET  /timer               -> { timer, now } the shared countdown + server clock
+//   POST /timer               { seconds } -> starts the shared countdown
 //
-// Everything except /login, GET /pokemon and PUT /pokemon requires
+// Everything except /login, GET /pokemon, PUT /pokemon and GET /timer requires
 // `Authorization: Bearer <token>`. The /pokemon routes are intentionally
 // open, no login, so anyone with the page open can edit and save the
 // draft plan, they're scoped to their own file so they can't touch
 // projects.json.
+//
+// The timer lives in timer.json. Only the server clock is used to set the
+// end time, and a new timer is refused while one is still running, so a
+// running countdown can't be shortened, replaced or stopped.
 
 const ALLOWED_ORIGIN = 'https://pjmoller.github.io';
 const OWNER = 'PJMoller';
@@ -26,6 +32,8 @@ const REPO = 'PJMoller.github.io';
 const FILE_PATH = 'projects.json';
 const POKEMON_FILE_PATH = 'pokemon.json';
 const POKEMON_MAX_BYTES = 50_000; // guard against absurd/abusive payloads on the open endpoint
+const TIMER_FILE_PATH = 'timer.json';
+const TIMER_MAX_SECONDS = 99 * 3600 + 59 * 60 + 59;
 const BRANCH = 'main';
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
@@ -100,6 +108,15 @@ async function githubFetch(env, path, options = {}) {
   });
 }
 
+// reads timer.json; timer is null if the file doesn't exist yet
+async function readTimerFile(env) {
+  const res = await githubFetch(env, `/repos/${OWNER}/${REPO}/contents/${TIMER_FILE_PATH}?ref=${BRANCH}`);
+  if (res.status === 404) return { timer: null, sha: undefined };
+  if (!res.ok) throw new Error(`github returned ${res.status}`);
+  const data = await res.json();
+  return { timer: JSON.parse(atob(data.content.replace(/\n/g, ''))), sha: data.sha };
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -147,11 +164,56 @@ export default {
       return json(data, res.status);
     }
 
+    // open, no login: everyone sees the same countdown. `now` is the server
+    // clock so clients can correct for a wrong local clock.
+    if (url.pathname === '/timer' && request.method === 'GET') {
+      try {
+        const { timer } = await readTimerFile(env);
+        return json({ timer, now: Date.now() });
+      } catch (err) {
+        return json({ error: err.message }, 502);
+      }
+    }
+
     // everything below requires a valid session
     const auth = request.headers.get('Authorization') || '';
     const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
     if (!(await verifySession(env.SESSION_SECRET, token))) {
       return json({ error: 'unauthorized' }, 401);
+    }
+
+    // start the shared countdown (admin only). Refused while one is running.
+    if (url.pathname === '/timer' && request.method === 'POST') {
+      const body = await request.json().catch(() => ({}));
+      const seconds = body.seconds;
+      if (!Number.isInteger(seconds) || seconds < 1 || seconds > TIMER_MAX_SECONDS) {
+        return json({ error: 'seconds must be a whole number between 1 and 359999' }, 400);
+      }
+
+      let current;
+      try {
+        current = await readTimerFile(env);
+      } catch (err) {
+        return json({ error: err.message }, 502);
+      }
+      const now = Date.now();
+      if (current.timer && current.timer.endAt > now) {
+        return json({ error: 'a timer is already running', timer: current.timer, now }, 409);
+      }
+
+      const timer = { startedAt: now, endAt: now + seconds * 1000, total: seconds };
+      const res = await githubFetch(env, `/repos/${OWNER}/${REPO}/contents/${TIMER_FILE_PATH}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'start timer',
+          content: btoa(JSON.stringify(timer, null, 2) + '\n'),
+          sha: current.sha,
+          branch: BRANCH,
+        }),
+      });
+      if (!res.ok) return json({ error: `github returned ${res.status}` }, 502);
+      return json({ timer, now });
     }
 
     if (url.pathname === '/projects' && request.method === 'GET') {
